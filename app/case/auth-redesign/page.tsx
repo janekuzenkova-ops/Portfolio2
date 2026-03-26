@@ -177,39 +177,41 @@ export default function AuthRedesignCase() {
 
         {/* Prev / Next case */}
         <section className="px-5">
-          <div className="flex items-center justify-between">
-            <a href="/" className="case-nav-link flex items-center gap-4" style={{ fontSize: "28px", fontWeight: 600 }}>
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+            <a href="/" className="case-nav-link" style={{ display: "flex", alignItems: "center", gap: "16px", fontSize: "28px", fontWeight: 600 }}>
               <TiltImage
                 src="/images/case2-header.png"
                 alt="Предыдущий кейс"
                 width={200}
                 height={150}
-                className="w-full h-full object-cover rounded-xl"
+                className="object-cover rounded-xl"
                 style={{
                   width: "100px",
                   height: "75px",
                   overflow: "hidden",
                   borderRadius: "12px",
                   boxShadow: "0 0 0 1px rgba(255,255,255,0.08), 0 2px 8px rgba(0,0,0,0.3)",
+                  flexShrink: 0,
                 }}
               />
               <span style={{ display: "inline-block", transform: "translateY(1px)" }}>←</span> предыдущий кейс
             </a>
 
-            <a href="/" className="case-nav-link flex items-center gap-4" style={{ fontSize: "28px", fontWeight: 600 }}>
+            <a href="/" className="case-nav-link" style={{ display: "flex", alignItems: "center", gap: "16px", fontSize: "28px", fontWeight: 600 }}>
               следующий кейс <span style={{ display: "inline-block", transform: "translateY(1px)" }}>→</span>
               <TiltImage
                 src="/images/case1-header.png"
                 alt="Следующий кейс"
                 width={200}
                 height={150}
-                className="w-full h-full object-cover rounded-xl"
+                className="object-cover rounded-xl"
                 style={{
                   width: "100px",
                   height: "75px",
                   overflow: "hidden",
                   borderRadius: "12px",
                   boxShadow: "0 0 0 1px rgba(255,255,255,0.08), 0 2px 8px rgba(0,0,0,0.3)",
+                  flexShrink: 0,
                 }}
               />
             </a>

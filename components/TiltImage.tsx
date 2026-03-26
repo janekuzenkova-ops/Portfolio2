@@ -47,10 +47,12 @@ export default function TiltImage({ src, alt, width, height, className, style }:
     >
       <div
         style={{
+          width: "100%",
+          height: "100%",
           overflow: overflow as string,
           borderRadius: borderRadius as string,
           boxShadow: boxShadow as string,
-          transition: "transform 0.25s ease-out, box-shadow 0.25s ease-out",
+          transition: "transform 0.25s ease-out",
           transform: `rotateX(${tilt.x}deg) rotateY(${tilt.y}deg) scale(${hovered ? 1.05 : 1})`,
           transformStyle: "preserve-3d",
         }}
@@ -61,7 +63,7 @@ export default function TiltImage({ src, alt, width, height, className, style }:
           width={width}
           height={height}
           className={className}
-          style={{ display: "block" }}
+          style={{ display: "block", width: "100%", height: "100%" }}
         />
       </div>
     </div>
