@@ -5,6 +5,8 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import ScrollReveal from "@/components/ScrollReveal";
 import CaseGlowImage from "@/components/CaseGlowImage";
+import ReadingProgress from "@/components/ReadingProgress";
+import TiltImage from "@/components/TiltImage";
 
 export const metadata: Metadata = {
   title: "Редизайн флоу авторизации | Кузенкова Евгения",
@@ -28,6 +30,7 @@ function StaticImage({ src, alt, aspect }: { src: string; alt: string; aspect: s
 export default function AuthRedesignCase() {
   return (
     <ScaleWrapper>
+      <ReadingProgress />
       <main className="min-h-screen">
         <Navbar />
 
@@ -176,35 +179,39 @@ export default function AuthRedesignCase() {
         <section className="px-5">
           <div className="flex items-center justify-between">
             <a href="/" className="case-nav-link flex items-center gap-4" style={{ fontSize: "28px", fontWeight: 600 }}>
-              <div
-                className="w-[100px] h-[75px] rounded-xl overflow-hidden"
-                style={{ boxShadow: "0 0 0 1px rgba(255,255,255,0.08), 0 2px 8px rgba(0,0,0,0.3)" }}
-              >
-                <Image
-                  src="/images/case2-header.png"
-                  alt="Предыдущий кейс"
-                  width={200}
-                  height={150}
-                  className="w-full h-full object-cover"
-                />
-              </div>
+              <TiltImage
+                src="/images/case2-header.png"
+                alt="Предыдущий кейс"
+                width={200}
+                height={150}
+                className="w-full h-full object-cover rounded-xl"
+                style={{
+                  width: "100px",
+                  height: "75px",
+                  overflow: "hidden",
+                  borderRadius: "12px",
+                  boxShadow: "0 0 0 1px rgba(255,255,255,0.08), 0 2px 8px rgba(0,0,0,0.3)",
+                }}
+              />
               <span style={{ display: "inline-block", transform: "translateY(1px)" }}>←</span> предыдущий кейс
             </a>
 
             <a href="/" className="case-nav-link flex items-center gap-4" style={{ fontSize: "28px", fontWeight: 600 }}>
               следующий кейс <span style={{ display: "inline-block", transform: "translateY(1px)" }}>→</span>
-              <div
-                className="w-[100px] h-[75px] rounded-xl overflow-hidden"
-                style={{ boxShadow: "0 0 0 1px rgba(255,255,255,0.08), 0 2px 8px rgba(0,0,0,0.3)" }}
-              >
-                <Image
-                  src="/images/case1-header.png"
-                  alt="Следующий кейс"
-                  width={200}
-                  height={150}
-                  className="w-full h-full object-cover"
-                />
-              </div>
+              <TiltImage
+                src="/images/case1-header.png"
+                alt="Следующий кейс"
+                width={200}
+                height={150}
+                className="w-full h-full object-cover rounded-xl"
+                style={{
+                  width: "100px",
+                  height: "75px",
+                  overflow: "hidden",
+                  borderRadius: "12px",
+                  boxShadow: "0 0 0 1px rgba(255,255,255,0.08), 0 2px 8px rgba(0,0,0,0.3)",
+                }}
+              />
             </a>
           </div>
         </section>

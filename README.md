@@ -28,6 +28,8 @@ components/
   Footer.tsx          — футер с соцсетями и контактами
   ScrollReveal.tsx    — IntersectionObserver fade-in + slide-up обёртка
   SmoothScroll.tsx    — Lenis smooth scroll провайдер
+  ReadingProgress.tsx — прогресс-бар чтения страницы кейса
+  TiltImage.tsx       — 3D tilt при наведении на превью кейса
 public/
   images/             — экспорт из figma API @2x
   images/case-auth/   — изображения кейса авторизации
@@ -46,7 +48,7 @@ npm run dev
 
 - макет из figma, 1440px, тёмная тема `#111111`
 - шрифты: **Koulen** (google fonts), **SF Pro Display** (system font stack)
-- zoom-скейлинг: страница масштабируется под любую ширину экрана
+- zoom-скейлинг: страница масштабируется под любую ширину экрана (min 40px отступы)
 
 ## фичи
 
@@ -69,6 +71,8 @@ npm run dev
 - **magnetic button** — кнопка "смотреть кейс" притягивается к курсору (как у Apple/Stripe)
 - **glow spotlight** — мягкое свечение за курсором на тёмных карточках (опыт + кейсы)
 - **depth falloff** — карточки карусели уменьшаются и затухают к краям экрана
+- **reading progress** — тонкий прогресс-бар чтения вверху страницы кейса
+- **tilt preview** — 3D наклон при наведении на превью предыдущего/следующего кейса
 
 ## контакты
 

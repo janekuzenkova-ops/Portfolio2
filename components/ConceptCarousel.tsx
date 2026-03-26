@@ -12,7 +12,14 @@ export default function ConceptCarousel() {
   const allCards = [...oneSet, ...oneSet];
 
   return (
-    <section id="concepts" className="w-full overflow-hidden">
+    <section
+      id="concepts"
+      className="w-full overflow-hidden"
+      style={{
+        marginLeft: "calc(-1 * var(--carousel-bleed, 0px))",
+        marginRight: "calc(-1 * var(--carousel-bleed, 0px))",
+      }}
+    >
       <div className="flex gap-4 animate-marquee w-fit">
         {allCards.map((card, i) => (
           <div
