@@ -8,23 +8,23 @@ const cards = [
 ];
 
 export default function ConceptCarousel() {
-  const allCards = [...cards, ...cards];
+  const oneSet = [...cards, ...cards];
+  const allCards = [...oneSet, ...oneSet];
 
   return (
     <section id="concepts" className="w-full overflow-hidden">
-      <div className="flex gap-4 animate-marquee w-fit px-5">
+      <div className="flex gap-4 animate-marquee w-fit">
         {allCards.map((card, i) => (
           <div
             key={i}
-            className="shrink-0 w-[338px] h-[400px] rounded-2xl overflow-hidden bg-[#dee2e6]
-              transition-transform duration-300 hover:scale-105 cursor-pointer"
+            className="shrink-0 w-[338px] h-[400px] rounded-2xl overflow-hidden bg-[#dee2e6] cursor-pointer group"
           >
             <Image
               src={card.src}
               alt={card.alt}
               width={676}
               height={800}
-              className="w-full h-full object-cover"
+              className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-[1.05]"
             />
           </div>
         ))}

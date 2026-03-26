@@ -12,20 +12,25 @@
 
 ```
 app/
-  layout.tsx          — корневой лейаут, шрифты (Koulen + SF Pro Display)
-  page.tsx            — главная страница
-  globals.css         — глобальные стили, карусель-анимация
+  layout.tsx                   — корневой лейаут, шрифты (Koulen + SF Pro Display)
+  page.tsx                     — главная страница
+  globals.css                  — глобальные стили, карусель-анимация
+  case/auth-redesign/page.tsx  — кейс: редизайн флоу авторизации
 components/
   ScaleWrapper.tsx    — zoom-масштабирование под ширину экрана
-  Navbar.tsx          — навигация с якорями
-  Hero.tsx            — герой-секция "KUZENKOVA" (Koulen 149px)
-  ConceptCarousel.tsx — карусель концептов (8 карточек, infinite scroll, hover +5%)
-  CaseStudy.tsx       — кейс-стади с настраиваемой позицией кнопки
-  CaseButton.tsx      — интерактивная кнопка "смотреть кейс" (frosted glass + hover)
-  Experience.tsx      — опыт работы (4 карточки с тегами)
+  Navbar.tsx          — навигация с якорями (lenis smooth scroll)
+  Hero.tsx            — герой-секция "KUZENKOVA" (Koulen 149px, letter-by-letter reveal)
+  ConceptCarousel.tsx — карусель концептов (depth falloff эффект)
+  CaseStudy.tsx       — кейс-стади с glow + настраиваемой позицией кнопки
+  CaseButton.tsx      — магнитная кнопка "смотреть кейс" (frosted glass)
+  CaseGlowImage.tsx   — тёмная карточка с изображением и glow spotlight
+  Experience.tsx      — опыт работы (glow + jiggle chips)
   Footer.tsx          — футер с соцсетями и контактами
+  ScrollReveal.tsx    — IntersectionObserver fade-in + slide-up обёртка
+  SmoothScroll.tsx    — Lenis smooth scroll провайдер
 public/
   images/             — экспорт из figma API @2x
+  images/case-auth/   — изображения кейса авторизации
 ```
 
 ## запуск
@@ -47,12 +52,23 @@ npm run dev
 
 - адаптивный zoom-скейлинг (1440px дизайн → любой viewport)
 - бесконечная карусель концептов (CSS animation, hover scale +5%)
-- 3 кейс-стади ECOS с мокапами из figma
-- hover-эффект на кнопке "смотреть кейс"
+- 3 кейс-стади ECOS с мокапами из figma + страница кейса авторизации
+- hover-эффект на кнопке "смотреть кейс" (frosted glass, backdrop-blur)
 - секция опыта работы с тегами скиллов
-- якорная навигация (smooth scroll)
+- якорная навигация
 - все изображения вытянуты через figma REST API (png @2x)
 - кейс-хедеры пересобраны послойно (button-слой исключён из экспорта)
+
+## анимации
+
+- **sticky blur nav** — navbar прилипает и получает backdrop-blur при скролле
+- **hero reveal** — буквы "KUZENKOVA" появляются последовательно, подзаголовок fade-in
+- **scroll reveal** — кейсы и секция опыта fade-in + slide-up при появлении в viewport
+- **lenis smooth scroll** — плавный инерционный скролл по всей странице
+- **jiggle chips** — теги скиллов хаотично подёргиваются при наведении на карточку опыта
+- **magnetic button** — кнопка "смотреть кейс" притягивается к курсору (как у Apple/Stripe)
+- **glow spotlight** — мягкое свечение за курсором на тёмных карточках (опыт + кейсы)
+- **depth falloff** — карточки карусели уменьшаются и затухают к краям экрана
 
 ## контакты
 

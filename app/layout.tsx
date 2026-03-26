@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Koulen } from "next/font/google";
 import "./globals.css";
+import SmoothScroll from "@/components/SmoothScroll";
 
 const koulen = Koulen({
   weight: "400",
@@ -29,6 +30,7 @@ export default function RootLayout({
             '-apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Roboto, "Helvetica Neue", sans-serif',
         }}
       >
+        <SmoothScroll />
         {children}
       </body>
     </html>
