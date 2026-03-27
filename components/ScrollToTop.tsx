@@ -17,7 +17,13 @@ export default function ScrollToTop() {
     document.documentElement.scrollTop = 0;
     document.body.scrollTop = 0;
 
-    const run = () => getLenis()?.scrollTo(0, { immediate: true });
+    const run = () => {
+      try {
+        getLenis()?.scrollTo(0, { immediate: true });
+      } catch {
+        /* lenis ещё не поднят или внутренний сбой — страница не должна падать */
+      }
+    };
     run();
     const t0 = window.setTimeout(run, 0);
     const t1 = window.setTimeout(run, 50);
