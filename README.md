@@ -12,7 +12,7 @@
 
 ```
 app/
-  layout.tsx                   — корневой лейаут, SmoothScroll + ScrollToTop, шрифты; фон `#111` инлайном
+  layout.tsx                   — корневой лейаут, SmoothScroll + `<Suspense><ScrollToTop /></Suspense>` (usePathname), фон `#111` инлайном
   page.tsx                     — главная (кейсы и опыт без ScrollReveal — стабильная видимость)
   globals.css                  — глобальные стили, карусель-анимация
   case/auth-redesign/page.tsx  — кейс: редизайн флоу авторизации (без ScrollReveal — растры и секции сразу видимы)
