@@ -1,13 +1,12 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useLayoutEffect, useState } from "react";
 
 export default function Hero() {
   const [visible, setVisible] = useState(false);
 
-  useEffect(() => {
-    const t = requestAnimationFrame(() => setVisible(true));
-    return () => cancelAnimationFrame(t);
+  useLayoutEffect(() => {
+    setVisible(true);
   }, []);
 
   const letters = "kuzenkova".split("");
@@ -44,6 +43,7 @@ export default function Hero() {
         <p
           className="text-[28px] font-medium text-[#706d6d] leading-[1.4] hero-subtitle"
           style={{
+            color: "#706d6d",
             opacity: visible ? 1 : 0,
             transform: visible ? "translateY(0)" : "translateY(20px)",
             transition: "opacity 0.6s ease 0.55s, transform 0.6s ease 0.55s",

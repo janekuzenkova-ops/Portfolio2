@@ -22,10 +22,12 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="ru" className={koulen.variable}>
+    <html lang="ru" className={koulen.variable} style={{ backgroundColor: "#111111" }}>
       <body
         className="bg-[#111111] text-white antialiased"
         style={{
+          backgroundColor: "#111111",
+          color: "#ffffff",
           fontFamily:
             '-apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Roboto, "Helvetica Neue", sans-serif',
         }}

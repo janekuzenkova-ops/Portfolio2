@@ -12,7 +12,7 @@
 
 ```
 app/
-  layout.tsx                   — корневой лейаут, шрифты (Koulen + SF Pro Display)
+  layout.tsx                   — корневой лейаут, шрифты; фон `#111` и цвет текста дублируются инлайном (фолбэк если не подтянулся tailwind)
   page.tsx                     — главная страница
   globals.css                  — глобальные стили, карусель-анимация
   case/auth-redesign/page.tsx  — кейс: редизайн флоу авторизации
@@ -44,6 +44,8 @@ npm run dev
 
 → http://localhost:3000
 
+→ прод: [kuzenkova-portfolio.vercel.app](https://kuzenkova-portfolio.vercel.app/)
+
 ## дизайн
 
 - макет из figma, 1440px, тёмная тема `#111111`
@@ -68,8 +70,8 @@ npm run dev
 ## анимации
 
 - **sticky blur nav** — navbar прилипает и получает backdrop-blur при скролле
-- **hero reveal** — буквы "KUZENKOVA" появляются последовательно, подзаголовок fade-in
-- **scroll reveal** — кейсы и секция опыта fade-in + slide-up при появлении в viewport
+- **hero reveal** — буквы "KUZENKOVA" появляются последовательно (`useLayoutEffect` + инлайн-цвета, без залипания в `opacity: 0`)
+- **scroll reveal** — кейсы и опыт: `IntersectionObserver` + `lenis.on("scroll")`, проверка по `getBoundingClientRect`, wheel/touch/resize и короткий поллинг до показа (чистый IO с Lenis давал невидимые блоки)
 - **lenis smooth scroll** — плавный инерционный скролл по всей странице
 - **jiggle chips** — теги скиллов хаотично подёргиваются при наведении на карточку опыта
 - **magnetic button** — кнопка "смотреть кейс" притягивается к курсору (как у Apple/Stripe)
