@@ -59,7 +59,8 @@ body {
   .exp-chip-tag { font-size: 14px !important; padding: 6px 10px !important; }
   .exp-section { padding-top: 60px !important; }
 
-  .footer-section { margin-top: 60px !important; }
+  /* 24px между секцией «опыт работы» и футером */
+  .footer-section { margin-top: 24px !important; }
   .footer-inner { flex-direction: column !important; gap: 16px !important; }
   .footer-links { flex-wrap: wrap !important; gap: 16px !important; }
   .footer-copy { font-size: 16px !important; }
