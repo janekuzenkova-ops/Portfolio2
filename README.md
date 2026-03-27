@@ -13,7 +13,7 @@
 ```
 app/
   layout.tsx                   — корневой лейаут, шрифты; фон `#111` и цвет текста дублируются инлайном (фолбэк если не подтянулся tailwind)
-  page.tsx                     — главная страница
+  page.tsx                     — главная (кейсы и опыт без ScrollReveal — стабильная видимость)
   globals.css                  — глобальные стили, карусель-анимация
   case/auth-redesign/page.tsx  — кейс: редизайн флоу авторизации
 components/
@@ -71,7 +71,7 @@ npm run dev
 
 - **sticky blur nav** — navbar прилипает и получает backdrop-blur при скролле
 - **hero reveal** — буквы "KUZENKOVA" появляются последовательно (`useLayoutEffect` + инлайн-цвета, без залипания в `opacity: 0`)
-- **scroll reveal** — кейсы и опыт: `IntersectionObserver` + `lenis.on("scroll")`, проверка по `getBoundingClientRect`, wheel/touch/resize и короткий поллинг до показа (чистый IO с Lenis давал невидимые блоки)
+- **scroll reveal** — на странице кейса: `IntersectionObserver` + Lenis + геометрия + wheel/touch + поллинг; таймаут **2.8s** принудительно показывает блок (страховка). **главная:** кейсы и опыт **без** обёртки — сразу видимы, без fade-in
 - **lenis smooth scroll** — плавный инерционный скролл по всей странице
 - **jiggle chips** — теги скиллов хаотично подёргиваются при наведении на карточку опыта
 - **magnetic button** — кнопка "смотреть кейс" притягивается к курсору (как у Apple/Stripe)

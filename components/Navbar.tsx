@@ -43,7 +43,10 @@ export default function Navbar() {
   }, [isHome]);
 
   return (
-    <nav className="w-full px-5" style={{ paddingTop: "20px", paddingBottom: "20px" }}>
+    <nav
+      className="w-full px-5"
+      style={{ paddingTop: "20px", paddingBottom: "20px", color: "#535457" }}
+    >
       {/* Desktop */}
       <div className="desktop-only items-center justify-between">
         <div className="flex items-center gap-10">

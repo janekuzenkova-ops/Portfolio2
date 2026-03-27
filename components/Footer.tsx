@@ -11,7 +11,12 @@ export default function Footer() {
     <footer
       id="footer"
       className="px-5 footer-section"
-      style={{ marginTop: "140px", paddingTop: "20px", paddingBottom: "20px" }}
+      style={{
+        marginTop: "140px",
+        paddingTop: "20px",
+        paddingBottom: "20px",
+        color: "#484a4d",
+      }}
     >
       <div className="flex items-center justify-between footer-inner">
         <div className="flex items-center gap-10 footer-links">

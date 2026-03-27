@@ -26,6 +26,7 @@ export default function ScrollReveal({ children, delay = 0, className = "" }: Sc
     let io: IntersectionObserver | null = null;
     let lenisPoll = 0;
     let revealTick = 0;
+    let safetyId = 0;
     let lenisAttached = false;
 
     const finish = () => {
@@ -36,6 +37,7 @@ export default function ScrollReveal({ children, delay = 0, className = "" }: Sc
       io = null;
       window.clearInterval(lenisPoll);
       window.clearInterval(revealTick);
+      window.clearTimeout(safetyId);
     };
 
     const isInView = () => {
@@ -93,10 +95,13 @@ export default function ScrollReveal({ children, delay = 0, className = "" }: Sc
       requestAnimationFrame(runCheck);
     });
 
+    safetyId = window.setTimeout(() => finish(), 2800);
+
     return () => {
       io?.disconnect();
       window.clearInterval(lenisPoll);
       window.clearInterval(revealTick);
+      window.clearTimeout(safetyId);
       window.removeEventListener("wheel", onUserMove);
       window.removeEventListener("touchmove", onUserMove);
       window.removeEventListener("resize", onUserMove);
