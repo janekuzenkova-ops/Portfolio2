@@ -24,7 +24,7 @@ components/
   CaseStudy.tsx       — кейс-стади с glow + настраиваемой позицией кнопки
   CaseButton.tsx      — магнитная кнопка "смотреть кейс" (frosted glass)
   CaseGlowImage.tsx   — тёмная карточка с изображением и glow spotlight
-  Experience.tsx      — опыт работы (glow + jiggle chips)
+  Experience.tsx      — опыт работы (glow + jiggle chips; 60px между периодом и тегами)
   Footer.tsx          — футер с соцсетями и контактами
   ScrollReveal.tsx    — IntersectionObserver fade-in + slide-up обёртка
   SmoothScroll.tsx    — Lenis smooth scroll провайдер

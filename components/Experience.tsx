@@ -111,7 +111,10 @@ function GlowCard({ exp, idx }: { exp: typeof experiences[number]; idx: number }
         </p>
       </div>
 
-      <div className="flex flex-wrap gap-[10px] exp-chips" style={{ position: "relative", zIndex: 1 }}>
+      <div
+        className="flex flex-wrap gap-[10px] exp-chips"
+        style={{ position: "relative", zIndex: 1, marginTop: "60px" }}
+      >
         {exp.tags.map((tag, j) => (
           <span
             key={j}
