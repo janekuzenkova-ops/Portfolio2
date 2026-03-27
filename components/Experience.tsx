@@ -81,7 +81,7 @@ function GlowCard({ exp, idx }: { exp: typeof experiences[number]; idx: number }
   return (
     <div
       className="group flex-1 bg-[#191919] rounded-2xl flex flex-col justify-between"
-      style={{ padding: "20px", height: "302px", position: "relative", overflow: "hidden" }}
+      style={{ padding: "20px", minHeight: "240px", position: "relative", overflow: "hidden" }}
       onMouseMove={handleMove}
       onMouseLeave={handleLeave}
     >
@@ -99,14 +99,14 @@ function GlowCard({ exp, idx }: { exp: typeof experiences[number]; idx: number }
 
       <div className="flex flex-col gap-4" style={{ position: "relative", zIndex: 1 }}>
         <div className="flex flex-col gap-1">
-          <h3 style={{ fontSize: "28px", fontWeight: 500, lineHeight: "35px", color: "#ffffff" }}>
+          <h3 className="exp-card-title" style={{ fontSize: "28px", fontWeight: 500, lineHeight: "35px", color: "#ffffff" }}>
             {exp.company}
           </h3>
-          <p style={{ fontSize: "21px", fontWeight: 500, lineHeight: "26px", color: "rgba(255,255,255,0.6)" }}>
+          <p className="exp-card-role" style={{ fontSize: "21px", fontWeight: 500, lineHeight: "26px", color: "rgba(255,255,255,0.6)" }}>
             {exp.role}
           </p>
         </div>
-        <p style={{ fontSize: "18px", fontWeight: 500, lineHeight: "22px", color: "rgba(255,255,255,0.2)" }}>
+        <p className="exp-card-period" style={{ fontSize: "18px", fontWeight: 500, lineHeight: "22px", color: "rgba(255,255,255,0.2)" }}>
           {exp.period}
         </p>
       </div>
@@ -115,7 +115,7 @@ function GlowCard({ exp, idx }: { exp: typeof experiences[number]; idx: number }
         {exp.tags.map((tag, j) => (
           <span
             key={j}
-            className={`exp-chip exp-chip-${idx}-${j}`}
+            className={`exp-chip exp-chip-${idx}-${j} exp-chip-tag`}
             style={{
               backgroundColor: "#313131",
               fontSize: "21px",
@@ -137,14 +137,14 @@ function GlowCard({ exp, idx }: { exp: typeof experiences[number]; idx: number }
 
 export default function Experience() {
   return (
-    <section id="experience" className="px-5" style={{ paddingTop: "120px" }}>
+    <section id="experience" className="px-5 exp-section" style={{ paddingTop: "120px" }}>
       <style>{buildKeyframes()}</style>
       <div className="flex flex-col gap-10">
-        <h2 style={{ fontSize: "48px", fontWeight: 500, lineHeight: "60px", color: "#ffffff" }}>
+        <h2 className="exp-heading" style={{ fontSize: "48px", fontWeight: 500, lineHeight: "60px", color: "#ffffff" }}>
           oпыт работы
         </h2>
 
-        <div className="flex gap-4">
+        <div className="flex gap-4 exp-grid">
           {experiences.map((exp, i) => (
             <GlowCard key={i} exp={exp} idx={i} />
           ))}

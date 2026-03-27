@@ -30,7 +30,7 @@ export default function CaseGlowImage({ src, alt, aspect, ring = true }: CaseGlo
 
   return (
     <div
-      className={`relative w-full rounded-2xl overflow-hidden${ring ? " ring-1 ring-white/10" : ""}`}
+      className={`relative w-full rounded-2xl overflow-hidden case-page-img${ring ? " ring-1 ring-white/10" : ""}`}
       style={{ aspectRatio: aspect }}
       onMouseMove={handleMove}
       onMouseLeave={handleLeave}

@@ -21,7 +21,9 @@ export default function Home() {
           <ScrollReveal>
             <CaseStudy
               headerImage="/images/case1-header.png"
-              title="ECOS — редизайн экрана верификации"
+              title="редизайн экрана верификации"
+              company="ECOS"
+              tags={["fintech", "ios, android", "b2c", "2025"]}
               buttonPos={{ top: "58.5%", right: "180px" }}
               subCards={[
                 { src: "/images/case1-sub1.png", bg: "#dee2e6" },
@@ -33,7 +35,9 @@ export default function Home() {
           <ScrollReveal delay={0.1}>
             <CaseStudy
               headerImage="/images/case2-header.png"
-              title="ECOS — а/б тестирование посадочной страницы промо"
+              title="а/б тестирование посадочной страницы промо"
+              company="ECOS"
+              tags={["fintech", "web", "b2c", "2024"]}
               buttonPos={{ top: "58.5%", right: "180px" }}
             />
           </ScrollReveal>
@@ -41,7 +45,9 @@ export default function Home() {
           <ScrollReveal delay={0.1}>
             <CaseStudy
               headerImage="/images/case3-header.png"
-              title="ECOS — редизайн флоу авторизации и регистрации"
+              title="редизайн флоу авторизации и регистрации"
+              company="ECOS"
+              tags={["fintech", "ios, android", "b2c", "2025"]}
               buttonPos={{ top: "58.5%", right: "180px" }}
               href="/case/auth-redesign"
               subCards={[

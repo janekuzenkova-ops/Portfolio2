@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState, useCallback } from "react";
+import { useRef, useState, useCallback, useEffect } from "react";
 
 interface CaseButtonProps {
   top: string;
@@ -9,13 +9,20 @@ interface CaseButtonProps {
   href?: string;
 }
 
-const MAGNETIC_RANGE = 60;
 const MAGNETIC_STRENGTH = 0.2;
 
 export default function CaseButton({ top, left, right, href }: CaseButtonProps) {
   const btnRef = useRef<HTMLAnchorElement>(null);
   const [offset, setOffset] = useState({ x: 0, y: 0 });
   const [hovered, setHovered] = useState(false);
+  const [mobile, setMobile] = useState(false);
+
+  useEffect(() => {
+    const check = () => setMobile(window.innerWidth < 768);
+    check();
+    window.addEventListener("resize", check);
+    return () => window.removeEventListener("resize", check);
+  }, []);
 
   const handleMouseMove = useCallback((e: React.MouseEvent) => {
     const el = btnRef.current;
@@ -25,10 +32,7 @@ export default function CaseButton({ top, left, right, href }: CaseButtonProps) 
     const cy = rect.top + rect.height / 2;
     const dx = e.clientX - cx;
     const dy = e.clientY - cy;
-    setOffset({
-      x: dx * MAGNETIC_STRENGTH,
-      y: dy * MAGNETIC_STRENGTH,
-    });
+    setOffset({ x: dx * MAGNETIC_STRENGTH, y: dy * MAGNETIC_STRENGTH });
   }, []);
 
   const handleMouseLeave = useCallback(() => {
@@ -40,25 +44,30 @@ export default function CaseButton({ top, left, right, href }: CaseButtonProps) 
 
   const posStyle: React.CSSProperties = {
     position: "absolute",
-    top,
+    top: mobile ? "50%" : top,
   };
 
-  if (right) {
+  if (mobile) {
+    posStyle.left = "50%";
+  } else if (right) {
     posStyle.right = right;
   } else {
     posStyle.left = left;
   }
 
+  const btnSize = mobile ? 120 : 228;
+  const zoneSize = mobile ? 140 : 300;
+
   return (
     <div
       style={{
         ...posStyle,
-        width: "300px",
-        height: "300px",
+        width: `${zoneSize}px`,
+        height: `${zoneSize}px`,
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
-        transform: baseTranslate,
+        transform: mobile ? "translate(-50%, -50%)" : baseTranslate,
         pointerEvents: "auto",
         zIndex: 20,
       }}
@@ -70,8 +79,8 @@ export default function CaseButton({ top, left, right, href }: CaseButtonProps) 
         ref={btnRef}
         href={href || "#"}
         style={{
-          width: "228px",
-          height: "228px",
+          width: `${btnSize}px`,
+          height: `${btnSize}px`,
           borderRadius: "50%",
           cursor: "pointer",
           display: "flex",
@@ -91,14 +100,14 @@ export default function CaseButton({ top, left, right, href }: CaseButtonProps) 
         <span
           style={{
             color: "#ffffff",
-            fontSize: "24px",
+            fontSize: mobile ? "14px" : "24px",
             fontWeight: 500,
             userSelect: "none",
             textAlign: "center",
             lineHeight: "1.3",
           }}
         >
-          смотреть кейс
+          смотреть{mobile ? <br /> : " "}кейс
         </span>
       </a>
     </div>

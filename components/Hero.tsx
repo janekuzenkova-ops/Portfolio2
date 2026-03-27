@@ -15,11 +15,12 @@ export default function Hero() {
   return (
     <section
       id="top"
-      className="w-full px-5 h-[580px] flex flex-col justify-end"
+      className="w-full px-5 hero-section flex flex-col justify-end"
+      style={{ height: "580px" }}
     >
       <div className="flex flex-col gap-[22px]">
         <h1
-          className="text-white tracking-tight"
+          className="text-white tracking-tight hero-title"
           style={{
             fontFamily: "var(--font-koulen)",
             fontSize: "149px",
@@ -41,7 +42,7 @@ export default function Hero() {
           ))}
         </h1>
         <p
-          className="text-[28px] font-medium text-[#706d6d] leading-[1.4]"
+          className="text-[28px] font-medium text-[#706d6d] leading-[1.4] hero-subtitle"
           style={{
             opacity: visible ? 1 : 0,
             transform: visible ? "translateY(0)" : "translateY(20px)",

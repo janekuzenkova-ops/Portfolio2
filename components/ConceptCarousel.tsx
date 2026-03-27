@@ -18,13 +18,14 @@ export default function ConceptCarousel() {
       style={{
         marginLeft: "calc(-1 * var(--carousel-bleed, 0px))",
         marginRight: "calc(-1 * var(--carousel-bleed, 0px))",
+        borderRadius: "var(--carousel-radius, 16px)",
       }}
     >
       <div className="flex gap-4 animate-marquee w-fit">
         {allCards.map((card, i) => (
           <div
             key={i}
-            className="shrink-0 w-[338px] h-[400px] rounded-2xl overflow-hidden bg-[#dee2e6] cursor-pointer group"
+            className="shrink-0 w-[338px] h-[400px] carousel-card rounded-2xl overflow-hidden bg-[#dee2e6] cursor-pointer group"
           >
             <Image
               src={card.src}

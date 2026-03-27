@@ -2,11 +2,14 @@
 
 import Image from "next/image";
 import { useCallback, useRef } from "react";
+import { useRouter } from "next/navigation";
 import CaseButton from "./CaseButton";
 
 interface CaseStudyProps {
   headerImage: string;
   title: string;
+  company?: string;
+  tags?: string[];
   subCards?: { src: string; bg: string }[];
   buttonPos?: { top: string; left?: string; right?: string };
   href?: string;
@@ -54,29 +57,74 @@ function GlowOverlay() {
 export default function CaseStudy({
   headerImage,
   title,
+  company,
+  tags,
   subCards,
   buttonPos = { top: "58.5%", right: "80px" },
   href,
 }: CaseStudyProps) {
+  const router = useRouter();
+
+  const handleClick = useCallback(() => {
+    if (href) router.push(href);
+  }, [href, router]);
+
   return (
-    <section className="px-5 flex flex-col gap-5">
+    <section
+      className="px-5 flex flex-col gap-5"
+      onClick={handleClick}
+      style={{ cursor: href ? "pointer" : undefined }}
+    >
+      {/* Mobile: text info above image */}
+      <div className="mobile-only" style={{ display: "none", flexDirection: "column", gap: "8px" }}>
+        {company && (
+          <p style={{ fontSize: "14px", fontWeight: 600, color: "rgba(255,255,255,0.5)", letterSpacing: "0.5px" }}>
+            {company}
+          </p>
+        )}
+        <h2 style={{ fontSize: "18px", fontWeight: 600, color: "#ffffff", lineHeight: 1.3 }}>
+          {title}
+        </h2>
+        {tags && (
+          <div style={{ display: "flex", flexWrap: "wrap", gap: "6px" }}>
+            {tags.map((tag, i) => (
+              <span
+                key={i}
+                style={{
+                  fontSize: "13px",
+                  fontWeight: 500,
+                  color: "rgba(255,255,255,0.4)",
+                  backgroundColor: "#1e1e1e",
+                  padding: "4px 10px",
+                  borderRadius: "6px",
+                }}
+              >
+                {tag}
+              </span>
+            ))}
+          </div>
+        )}
+      </div>
+
+      {/* Image card */}
       <div
-        className="relative w-full rounded-2xl overflow-hidden ring-1 ring-white/10"
+        className="relative w-full rounded-2xl overflow-hidden ring-1 ring-white/10 case-card-wrap"
         style={{ aspectRatio: "1400/810" }}
       >
         <Image
           src={headerImage}
           alt={title}
           fill
-          className="object-cover"
+          className="object-cover case-header-img"
           style={{ pointerEvents: "none" }}
         />
         <GlowOverlay />
         <CaseButton top={buttonPos.top} left={buttonPos.left} right={buttonPos.right} href={href} />
       </div>
 
+      {/* Desktop only: sub-cards */}
       {subCards && subCards.length > 0 && (
-        <div className="flex gap-4">
+        <div className="flex gap-4 desktop-only">
           {subCards.map((card, i) => (
             <div
               key={i}

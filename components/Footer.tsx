@@ -10,11 +10,11 @@ export default function Footer() {
   return (
     <footer
       id="footer"
-      className="px-5"
+      className="px-5 footer-section"
       style={{ marginTop: "140px", paddingTop: "20px", paddingBottom: "20px" }}
     >
-      <div className="flex items-center justify-between">
-        <div className="flex items-center gap-10">
+      <div className="flex items-center justify-between footer-inner">
+        <div className="flex items-center gap-10 footer-links">
           {socialLinks.map((link) => (
             <a
               key={link.label}
@@ -46,7 +46,7 @@ export default function Footer() {
           ))}
         </div>
 
-        <span style={{ color: "#484a4d", fontSize: "28px", fontWeight: 500 }}>
+        <span className="footer-copy" style={{ color: "#484a4d", fontSize: "28px", fontWeight: 500 }}>
           2026 © евгения кузенкова
         </span>
       </div>
