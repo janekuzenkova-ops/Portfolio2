@@ -1,27 +1,82 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 import { useCallback, useRef } from "react";
-import { useRouter } from "next/navigation";
 import CaseButton from "./CaseButton";
+import type { HomeCase } from "@/content/home";
 
-interface CaseStudyProps {
-  headerImage: string;
-  title: string;
-  company?: string;
-  tags?: string[];
-  subCards?: { src: string; bg: string }[];
-  buttonPos?: { top: string; left?: string; right?: string };
-  href?: string;
+/** копируемый текст + теги на десктопе поверх мокапа */
+function CaseMetaLayer({
+  company,
+  title,
+  tags,
+  overlay,
+}: Pick<HomeCase, "company" | "title" | "tags" | "overlay">) {
+  return (
+    <div
+      className="case-card-overlay desktop-only-block z-[3]"
+      style={{
+        ...overlay,
+        pointerEvents: "none",
+      }}
+    >
+      <div className="flex flex-col gap-2" style={{ pointerEvents: "auto", userSelect: "text" }}>
+        {company && (
+          <p
+            style={{
+              fontSize: "14px",
+              fontWeight: 600,
+              color: "rgba(255,255,255,0.5)",
+              letterSpacing: "0.5px",
+            }}
+          >
+            {company}
+          </p>
+        )}
+        <h2
+          style={{
+            fontSize: "clamp(22px, 2vw, 28px)",
+            fontWeight: 600,
+            color: "#ffffff",
+            lineHeight: 1.25,
+          }}
+        >
+          {title}
+        </h2>
+        {tags && tags.length > 0 && (
+          <div className="flex flex-wrap gap-2">
+            {tags.map((tag, i) => (
+              <span
+                key={i}
+                style={{
+                  fontSize: "13px",
+                  fontWeight: 500,
+                  color: "rgba(255,255,255,0.4)",
+                  backgroundColor: "#1e1e1e",
+                  padding: "4px 10px",
+                  borderRadius: "6px",
+                }}
+              >
+                {tag}
+              </span>
+            ))}
+          </div>
+        )}
+      </div>
+    </div>
+  );
 }
 
-function GlowOverlay() {
-  const ref = useRef<HTMLDivElement>(null);
-
+export default function CaseStudy({ data }: { data: HomeCase }) {
+  const { mockupImage, title, company, tags, subCards, button, href, overlay } = data;
+  const cardRef = useRef<HTMLDivElement>(null);
+  const glowRef = useRef<HTMLDivElement>(null);
   const handleMove = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
-    const glow = ref.current;
-    if (!glow) return;
-    const rect = e.currentTarget.getBoundingClientRect();
+    const glow = glowRef.current;
+    const root = cardRef.current;
+    if (!glow || !root) return;
+    const rect = root.getBoundingClientRect();
     const x = e.clientX - rect.left;
     const y = e.clientY - rect.top;
     glow.style.opacity = "1";
@@ -29,54 +84,13 @@ function GlowOverlay() {
   }, []);
 
   const handleLeave = useCallback(() => {
-    const glow = ref.current;
+    const glow = glowRef.current;
     if (glow) glow.style.opacity = "0";
   }, []);
 
   return (
-    <div
-      style={{ position: "absolute", inset: 0, zIndex: 10 }}
-      onMouseMove={handleMove}
-      onMouseLeave={handleLeave}
-    >
-      <div
-        ref={ref}
-        style={{
-          position: "absolute",
-          inset: 0,
-          opacity: 0,
-          transition: "opacity 0.3s ease",
-          pointerEvents: "none",
-          borderRadius: "inherit",
-        }}
-      />
-    </div>
-  );
-}
-
-export default function CaseStudy({
-  headerImage,
-  title,
-  company,
-  tags,
-  subCards,
-  buttonPos = { top: "58.5%", right: "80px" },
-  href,
-}: CaseStudyProps) {
-  const router = useRouter();
-
-  const handleClick = useCallback(() => {
-    if (href) router.push(href);
-  }, [href, router]);
-
-  return (
-    <section
-      className="px-5 flex flex-col gap-5"
-      onClick={handleClick}
-      style={{ cursor: href ? "pointer" : undefined }}
-    >
-      {/* Mobile: text info above image */}
-      <div className="mobile-only" style={{ display: "none", flexDirection: "column", gap: "8px" }}>
+    <section className="px-5 flex flex-col gap-5">
+      <div className="mobile-only flex-col gap-2" style={{ display: "none", flexDirection: "column" }}>
         {company && (
           <p style={{ fontSize: "14px", fontWeight: 600, color: "rgba(255,255,255,0.5)", letterSpacing: "0.5px" }}>
             {company}
@@ -106,40 +120,82 @@ export default function CaseStudy({
         )}
       </div>
 
-      {/* Image card */}
       <div
+        ref={cardRef}
         className="relative w-full rounded-2xl overflow-hidden ring-1 ring-white/10 case-card-wrap"
         style={{ aspectRatio: "1400/810" }}
+        onMouseMove={handleMove}
+        onMouseLeave={handleLeave}
       >
-        <Image
-          src={headerImage}
-          alt={title}
-          fill
-          className="object-cover case-header-img"
-          style={{ pointerEvents: "none" }}
-        />
-        <GlowOverlay />
-        <CaseButton top={buttonPos.top} left={buttonPos.left} right={buttonPos.right} href={href} />
+        {href ? (
+          <Link
+            href={href}
+            className="absolute inset-0 z-[1] block outline-none focus-visible:ring-2 focus-visible:ring-white/30 rounded-[inherit]"
+            aria-label={`${title} — смотреть кейс`}
+          >
+            <Image
+              src={mockupImage}
+              alt=""
+              fill
+              className="object-cover case-header-img"
+              style={{ pointerEvents: "none" }}
+            />
+          </Link>
+        ) : (
+          <div className="absolute inset-0 z-[1]">
+            <Image
+              src={mockupImage}
+              alt=""
+              fill
+              className="object-cover case-header-img"
+              style={{ pointerEvents: "none" }}
+            />
+          </div>
+        )}
+
+        <div className="absolute inset-0 z-[2] pointer-events-none rounded-[inherit]" aria-hidden>
+          <div
+            ref={glowRef}
+            className="absolute inset-0 opacity-0 transition-opacity duration-300 ease-out rounded-[inherit]"
+          />
+        </div>
+
+        <CaseMetaLayer company={company} title={title} tags={tags} overlay={overlay} />
+
+        <CaseButton top={button.top} left={button.left} right={button.right} href={href} />
       </div>
 
-      {/* Desktop only: sub-cards */}
       {subCards && subCards.length > 0 && (
-        <div className="flex gap-4 desktop-only">
+        <div className="flex gap-4 desktop-only case-subcards">
           {subCards.map((card, i) => (
             <div
               key={i}
-              className="flex-1 rounded-2xl overflow-hidden relative"
+              className="flex-1 flex flex-col gap-3 rounded-2xl overflow-hidden relative"
               style={{ backgroundColor: card.bg, aspectRatio: "692/520" }}
             >
-              <Image
-                src={card.src}
-                alt=""
-                width={1384}
-                height={1040}
-                className="w-full h-full object-contain"
-                style={{ objectPosition: "center calc(50% + 15px)", position: "relative", zIndex: 1, pointerEvents: "none" }}
-              />
-              {card.bg.toLowerCase() !== "#dee2e6" && <GlowOverlay />}
+              <div className="relative flex-1 min-h-0">
+                <Image
+                  src={card.image}
+                  alt={card.alt ?? ""}
+                  width={1384}
+                  height={1040}
+                  className="w-full h-full object-contain"
+                  style={{
+                    objectPosition: "center calc(50% + 15px)",
+                    position: "relative",
+                    zIndex: 1,
+                    pointerEvents: "none",
+                  }}
+                />
+              </div>
+              {card.caption && (
+                <p
+                  className="px-4 pb-3 text-[15px] font-medium leading-snug text-white/70 shrink-0 select-text"
+                  style={{ marginTop: "-4px" }}
+                >
+                  {card.caption}
+                </p>
+              )}
             </div>
           ))}
         </div>
