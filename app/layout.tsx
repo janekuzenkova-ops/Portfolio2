@@ -1,14 +1,6 @@
 import type { Metadata } from "next";
-import { Koulen } from "next/font/google";
 import "./globals.css";
 import SmoothScroll from "@/components/SmoothScroll";
-
-const koulen = Koulen({
-  weight: "400",
-  subsets: ["latin"],
-  variable: "--font-koulen",
-  display: "swap",
-});
 
 export const metadata: Metadata = {
   title: "Кузенкова Евгения | Product Designer",
@@ -22,9 +14,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="ru" className={koulen.variable} style={{ backgroundColor: "#111111" }}>
+    <html lang="ru" suppressHydrationWarning style={{ backgroundColor: "#111111" }}>
       <body
         className="bg-[#111111] text-white antialiased"
+        suppressHydrationWarning
         style={{
           backgroundColor: "#111111",
           color: "#ffffff",

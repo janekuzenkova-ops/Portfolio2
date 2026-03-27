@@ -1,10 +1,10 @@
 "use client";
 
-import { useLayoutEffect } from "react";
+import { useEffect } from "react";
 
-/** только страница кейса: в начало после входа (Lenis не сбрасывается сам при client navigation) */
+/** только страница кейса: в начало после входа (Lenis подключается без SSR — ждём несколько тиков) */
 export default function CaseEntryScroll() {
-  useLayoutEffect(() => {
+  useEffect(() => {
     window.scrollTo(0, 0);
     document.documentElement.scrollTop = 0;
     document.body.scrollTop = 0;
@@ -18,12 +18,10 @@ export default function CaseEntryScroll() {
     };
     tick();
     const id = requestAnimationFrame(tick);
-    const t0 = setTimeout(tick, 0);
-    const t1 = setTimeout(tick, 100);
+    const timers = [0, 50, 150, 400, 800].map((ms) => setTimeout(tick, ms));
     return () => {
       cancelAnimationFrame(id);
-      clearTimeout(t0);
-      clearTimeout(t1);
+      timers.forEach(clearTimeout);
     };
   }, []);
 

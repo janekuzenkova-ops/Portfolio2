@@ -1,9 +1,11 @@
 import type { NextConfig } from "next";
 import path from "node:path";
+import { fileURLToPath } from "node:url";
+
+const dir = path.dirname(fileURLToPath(import.meta.url));
 
 const nextConfig: NextConfig = {
-  // иначе next берёт корень по lockfile в ~/ и сыпет warning + странные баги dev
-  outputFileTracingRoot: path.resolve(process.cwd()),
+  outputFileTracingRoot: dir,
   images: {
     unoptimized: true,
   },
