@@ -3,7 +3,6 @@ import type { Metadata } from "next";
 import ScaleWrapper from "@/components/ScaleWrapper";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import ScrollReveal from "@/components/ScrollReveal";
 import CaseGlowImage from "@/components/CaseGlowImage";
 import ReadingProgress from "@/components/ReadingProgress";
 import TiltImage from "@/components/TiltImage";
@@ -165,7 +164,6 @@ export default function AuthRedesignCase() {
 
         <div className="case-spacer" style={{ height: "20px" }} />
 
-        <ScrollReveal>
           <section className="px-5">
             <CaseGlowImage
               src="/images/case-auth/hero.png"
@@ -173,11 +171,8 @@ export default function AuthRedesignCase() {
               aspect="1400/810"
             />
           </section>
-        </ScrollReveal>
-
         <div className="case-spacer" style={{ height: "20px" }} />
 
-        <ScrollReveal>
           <section className="px-5">
             <div className="desktop-only-block">
               <StaticImage
@@ -232,11 +227,8 @@ export default function AuthRedesignCase() {
               </BodyText>
             </div>
           </section>
-        </ScrollReveal>
-
         <div className="case-spacer" style={{ height: "20px" }} />
 
-        <ScrollReveal>
           <section className="px-5">
             <div className="desktop-only-block">
               <StaticImage
@@ -281,11 +273,8 @@ export default function AuthRedesignCase() {
               </div>
             </div>
           </section>
-        </ScrollReveal>
-
         <div className="case-spacer" style={{ height: "20px" }} />
 
-        <ScrollReveal>
           <section className="px-5">
             <CaseGlowImage
               src="/images/case-auth/img2-signup.png"
@@ -297,11 +286,8 @@ export default function AuthRedesignCase() {
               состояния полей и{nb}валидацию, чтобы{nb}снизить количество ошибок и{nb}упростить процесс регистрации.
             </ImageCaption>
           </section>
-        </ScrollReveal>
-
         <div className="case-spacer" style={{ height: "20px" }} />
 
-        <ScrollReveal>
           <section className="px-5">
             <div className="desktop-only-block">
               <StaticImage
@@ -349,11 +335,8 @@ export default function AuthRedesignCase() {
               </div>
             </div>
           </section>
-        </ScrollReveal>
-
         <div className="case-spacer" style={{ height: "20px" }} />
 
-        <ScrollReveal>
           <section className="px-5">
             <CaseGlowImage
               src="/images/case-auth/img3-verify.png"
@@ -365,11 +348,8 @@ export default function AuthRedesignCase() {
               автопереход между полями, понятные ошибки и{nb}таймер повторной отправки.
             </ImageCaption>
           </section>
-        </ScrollReveal>
-
         <div className="case-spacer" style={{ height: "20px" }} />
 
-        <ScrollReveal>
           <section className="px-5">
             <StaticImage
               src="/images/case-auth/img4-cards.png"
@@ -378,11 +358,8 @@ export default function AuthRedesignCase() {
             />
             <ImageCaption>Финальный шаг регистрации{nb}— создание PIN-кода.</ImageCaption>
           </section>
-        </ScrollReveal>
-
         <div className="case-spacer" style={{ height: "20px" }} />
 
-        <ScrollReveal>
           <section className="px-5">
             <div className="desktop-only-block">
               <StaticImage
@@ -419,11 +396,8 @@ export default function AuthRedesignCase() {
               </div>
             </div>
           </section>
-        </ScrollReveal>
-
         <div className="case-spacer" style={{ height: "20px" }} />
 
-        <ScrollReveal>
           <section className="px-5">
             <CaseGlowImage
               src="/images/case-auth/img5-password.png"
@@ -431,11 +405,8 @@ export default function AuthRedesignCase() {
               aspect="1400/810"
             />
           </section>
-        </ScrollReveal>
-
         <div className="case-spacer" style={{ height: "20px" }} />
 
-        <ScrollReveal>
           <section className="px-5">
             <div className="desktop-only-block">
               <StaticImage
@@ -476,8 +447,6 @@ export default function AuthRedesignCase() {
               </div>
             </div>
           </section>
-        </ScrollReveal>
-
         <div className="case-nav-spacer" style={{ height: "80px" }} />
 
         <section className="px-5">

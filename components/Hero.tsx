@@ -1,13 +1,10 @@
 "use client";
 
-import { useLayoutEffect, useState } from "react";
+import { useState } from "react";
 
 export default function Hero() {
-  const [visible, setVisible] = useState(false);
-
-  useLayoutEffect(() => {
-    setVisible(true);
-  }, []);
+  /** сразу true — без фазы opacity:0 (tailwind/гидрация/Lenis иначе дают «пустой» hero) */
+  const [visible] = useState(true);
 
   const letters = "kuzenkova".split("");
 
@@ -24,6 +21,7 @@ export default function Hero() {
             fontFamily: "var(--font-koulen)",
             fontSize: "149px",
             lineHeight: 1,
+            color: "#ffffff",
           }}
         >
           {letters.map((ch, i) => (

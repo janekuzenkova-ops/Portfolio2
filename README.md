@@ -15,7 +15,7 @@ app/
   layout.tsx                   — корневой лейаут, шрифты; фон `#111` и цвет текста дублируются инлайном (фолбэк если не подтянулся tailwind)
   page.tsx                     — главная (кейсы и опыт без ScrollReveal — стабильная видимость)
   globals.css                  — глобальные стили, карусель-анимация
-  case/auth-redesign/page.tsx  — кейс: редизайн флоу авторизации
+  case/auth-redesign/page.tsx  — кейс: редизайн флоу авторизации (без ScrollReveal — растры и секции сразу видимы)
 components/
   ScaleWrapper.tsx    — zoom-масштабирование под ширину экрана
   Navbar.tsx          — навигация с якорями (lenis smooth scroll)
@@ -25,8 +25,8 @@ components/
   CaseButton.tsx      — магнитная кнопка "смотреть кейс" (frosted glass)
   CaseGlowImage.tsx   — тёмная карточка с изображением и glow spotlight
   Experience.tsx      — опыт работы (glow + jiggle chips; 60px между периодом и тегами)
-  Footer.tsx          — футер с соцсетями и контактами
-  ScrollReveal.tsx    — IntersectionObserver fade-in + slide-up обёртка
+  Footer.tsx          — футер с соцсетями и контактами; копирайт — ссылка на главную (`/`)
+  ScrollReveal.tsx    — fade-in обёртка (в проекте сейчас не импортируется; оставлена на будущее)
   SmoothScroll.tsx    — Lenis smooth scroll провайдер
   ReadingProgress.tsx — прогресс-бар чтения страницы кейса
   TiltImage.tsx       — 3D tilt при наведении на превью кейса
@@ -55,7 +55,7 @@ npm run dev
 - макет из figma, 1440px, тёмная тема `#111111`
 - шрифты: **Koulen** (google fonts), **SF Pro Display** (system font stack)
 - zoom-скейлинг: страница масштабируется под любую ширину экрана (min 40px отступы)
-- мобильный адаптив: бургер-меню, стек-карточки, fluid шрифты (breakpoint 768px); превью кейсов на главной — `object-fit` + `scale(1.617)` для кропа правой части макета; от опыта работы до футера — 24px
+- мобильный адаптив: бургер-меню, стек-карточки, fluid шрифты (breakpoint 768px); превью кейсов на главной — `object-fit` + `scale(1.617)` для кропа правой части макета; от опыта работы до футера — 24px; в футере над блоком соцссылок — 20px (`footer-links` margin-top)
 - страница кейса адаптивна: текстовые секции пересобраны html'ем на мобилке (14px+), визуальные мокапы остаются изображениями с текстовыми подписями; иконка ECOS (`public/images/ecos-app-icon.png`), stat-карточки колонкой, неразрывные пробелы, отдельная вёрстка prev/next на мобилке
 
 ## фичи
@@ -74,8 +74,8 @@ npm run dev
 ## анимации
 
 - **sticky blur nav** — navbar прилипает и получает backdrop-blur при скролле
-- **hero reveal** — буквы "KUZENKOVA" появляются последовательно (`useLayoutEffect` + инлайн-цвета, без залипания в `opacity: 0`)
-- **scroll reveal** — на странице кейса: `IntersectionObserver` + Lenis + геометрия + wheel/touch + поллинг; таймаут **2.8s** принудительно показывает блок (страховка). **главная:** кейсы и опыт **без** обёртки — сразу видимы, без fade-in
+- **hero** — фамилия сразу видима: `useState(true)` + инлайн `color` у заголовка (без фазы `opacity: 0`)
+- **scroll reveal** — компонент `ScrollReveal.tsx` в репозитории; **главная** и **страница кейса** рендерят контент **без** него (Lenis + IO давали `opacity: 0` и пропадание блоков)
 - **lenis smooth scroll** — плавный инерционный скролл по всей странице
 - **jiggle chips** — теги скиллов хаотично подёргиваются при наведении на карточку опыта
 - **magnetic button** — кнопка "смотреть кейс" притягивается к курсору (как у Apple/Stripe)
