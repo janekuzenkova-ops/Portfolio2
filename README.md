@@ -40,7 +40,7 @@ public/
 ```bash
 npm install
 npm run dev
-# другой порт: npm run dev -- -p 3001
+# порт 3001: `npm run dev:3001` (сервер должен быть запущен — иначе в браузере ERR_CONNECTION_REFUSED)
 ```
 
 → http://localhost:3000
