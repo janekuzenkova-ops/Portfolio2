@@ -12,7 +12,7 @@
 
 ```
 app/
-  layout.tsx                   — корневой лейаут, SmoothScroll + `<Suspense><ScrollToTop /></Suspense>` (usePathname), фон `#111` инлайном
+  layout.tsx                   — корневой лейаут, SmoothScroll; фон `#111` инлайном
   page.tsx                     — главная (кейсы и опыт без ScrollReveal — стабильная видимость)
   globals.css                  — глобальные стили, карусель-анимация
   case/auth-redesign/page.tsx  — кейс: редизайн флоу авторизации (без ScrollReveal — растры и секции сразу видимы)
@@ -28,7 +28,7 @@ components/
   Footer.tsx          — футер с соцсетями и контактами; копирайт — ссылка на главную (`/`)
   ScrollReveal.tsx    — fade-in обёртка (в проекте сейчас не импортируется; оставлена на будущее)
   SmoothScroll.tsx    — Lenis smooth scroll провайдер
-  ScrollToTop.tsx     — при смене URL скролл в начало (`lenis.scrollTo(0)`), в т.ч. после «смотреть кейс»
+  CaseEntryScroll.tsx — только страница кейса: при монтировании скролл в начало + `lenis.scrollTo(0)` (без `usePathname` в layout — не белый экран)
   ReadingProgress.tsx — прогресс-бар чтения страницы кейса
   TiltImage.tsx       — 3D tilt при наведении на превью кейса
 public/

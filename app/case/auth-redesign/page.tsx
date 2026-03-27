@@ -1,6 +1,7 @@
 import Image from "next/image";
 import type { Metadata } from "next";
 import ScaleWrapper from "@/components/ScaleWrapper";
+import CaseEntryScroll from "@/components/CaseEntryScroll";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import CaseGlowImage from "@/components/CaseGlowImage";
@@ -114,6 +115,7 @@ function ImageCaption({ children }: { children: React.ReactNode }) {
 export default function AuthRedesignCase() {
   return (
     <ScaleWrapper>
+      <CaseEntryScroll />
       <ReadingProgress />
       <main className="min-h-screen case-page-main">
         <Navbar />
