@@ -35,6 +35,38 @@ body {
   overflow-x: hidden;
 }
 
+/* preflight задаёт h2 font-size: inherit — без этого заголовок кейса тянет 16px с родителя */
+.case-hero-meta h2.case-hero-title-spec {
+  font-size: 24px !important;
+  font-weight: 500 !important;
+  line-height: 1.35 !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  min-width: 0 !important;
+}
+
+@media (min-width: 768px) {
+  .case-hero-stats .case-hero-stats-inner {
+    font-size: 24px !important;
+    font-weight: 500 !important;
+    line-height: 1.25 !important;
+  }
+}
+
+/* строка тегов: fintech · ios… — не чипы, с точками-сепараторами; preflight тянет 16px с родителя */
+.case-hero-meta p.case-hero-tags-line {
+  font-size: 16px !important;
+  font-weight: 500 !important;
+  line-height: 1.25 !important;
+  margin: 0 !important;
+}
+@media (min-width: 768px) {
+  .case-hero-meta p.case-hero-tags-line {
+    font-size: 24px !important;
+  }
+}
+
 .desktop-only { display: flex; }
 .mobile-only { display: none; }
 .desktop-only-block { display: block; }
@@ -74,6 +106,11 @@ body {
     object-fit: cover !important;
     object-position: 78% center !important;
     transform: scale(1.08) translateX(-4%) !important;
+  }
+  /* промо: отдельный PNG браузера — не тянуть кадрирование под старый композитный слой */
+  .case-study-section[data-case-id="promo-ab"] .case-photo-native {
+    object-position: center 28% !important;
+    transform: scale(1.05) translateX(0) !important;
   }
   .case-hero-meta,
   .case-hero-stats {

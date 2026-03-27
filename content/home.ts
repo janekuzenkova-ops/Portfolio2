@@ -1,8 +1,8 @@
 /**
  * главная — правка в одном месте.
- * кейс-герой: слой 1 фон → слой 2 фото (рука/телефон, box в `layerPhoto.box` — двигай px/%) → слой 3 HTML (лого+текст по размерам из фигмы).
- * подложи отдельный PNG без текста в `layerPhoto.src`, когда будет готов.
- * figma: https://www.figma.com/design/vCzZlNer2Fixkg9ibPRxR0/?node-id=2693-159496
+ * порядок карточек: auth → promo-ab → verification (id не меняй — на них завязаны данные).
+ * кейс-герой: слой 1 фон → слой 2 фото (box в `layerPhoto.box`) → слой 3 HTML.
+ * макет: https://www.figma.com/design/vCzZlNer2Fixkg9ibPRxR0/?node-id=2693-159496 (Maket/b; было и 3108-30667 — тот же файл)
  */
 
 import type { CSSProperties } from "react";
@@ -48,12 +48,21 @@ export type CasePhotoLayer = {
   imageObjectPosition?: string;
 };
 
+/** десктоп: две вертикальные зоны (как в макете auth — градиент слева, чёрный справа). на мобиле — только `layerBackground`. */
+export type CaseBackgroundSplit = {
+  splitAt: string;
+  left: CSSProperties;
+  right: CSSProperties;
+};
+
 export type HomeCase = {
   id: string;
-  /** слой 1: заливка под картинкой фона */
+  /** слой 1: заливка под картинкой фона (и фолбэк на мобиле при `layerBackgroundSplit`) */
   layerBackground: string;
   /** слой 1b: опционально PNG/JPG фона (cover), путь из public */
   layerBackgroundImage?: string;
+  /** слой 1c: только ≥md; левая/правая колонка фона */
+  layerBackgroundSplit?: CaseBackgroundSplit;
   /** слой 2 — замени `src` на вырез без текста, когда приложишь файл */
   layerPhoto: CasePhotoLayer;
   title: string;
@@ -65,6 +74,12 @@ export type HomeCase = {
   /** слой 3: метрики снизу слева */
   copyStatsBox?: CSSProperties;
   stats?: string[];
+  /** строка тегов под заголовком (дефолт `#494a4d`; в макете auth — золотистый) */
+  tagsColor?: string;
+  /** заголовок под ECOS: напр. белый 60% — задаёт `color`, размер на desktop задаётся в компоненте при наличии */
+  copyTitleStyle?: CSSProperties;
+  /** одна строка тегов на desktop: напр. 24px medium `#494A4D` — `color` + класс размера в компоненте */
+  copyTagsLineStyle?: CSSProperties;
   /** лого 36×36 в макете */
   logoSrc?: string;
   logoSize?: number;
@@ -76,14 +91,26 @@ export type HomeCase = {
 
 const BTN_FULL = { top: "58.4%", left: "73.86%" } as const;
 
+/** единая типографика hero-кейсов: `CaseStudy` → `case-hero-title-spec` + строка `case-hero-tags-line` в `globals.css`. у auth теги — через `tagsColor`, без `copyTagsLineStyle`. */
+export const caseHeroTitleStyle: CSSProperties = { color: "#FFFFFF99" };
+export const caseHeroTagsLineStyle: CSSProperties = { color: "#494A4D" };
+
 export const homeCases: HomeCase[] = [
   {
-    id: "verification",
-    figmaNodeId: "2693:159516",
-    layerBackground: "#191919",
-    layerBackgroundImage: "/images/cases/case-verification-bg.png",
+    id: "auth",
+    figmaNodeId: "2699:165519",
+    layerBackground: "#262626",
+    layerBackgroundSplit: {
+      splitAt: "54%",
+      left: {
+        backgroundImage: "url(/images/cases/case-promo-bg.png)",
+        backgroundSize: "cover",
+        backgroundPosition: "center center",
+      },
+      right: { backgroundColor: "#262626" },
+    },
     layerPhoto: {
-      src: "/images/cases/case-verification-hand.png",
+      src: "/images/cases/figma-case-auth-hero.png",
       box: {
         position: "absolute",
         width: "58%",
@@ -98,53 +125,60 @@ export const homeCases: HomeCase[] = [
     },
     logoSrc: "/images/ecos-app-icon.png",
     logoSize: 36,
-    title: "редизайн экрана верификации",
+    title: "редизайн флоу авторизации и регистрации в fintech-продукте",
     company: "ECOS",
     tags: ["fintech", "ios, android", "b2c", "2025"],
-    copyMetaBox: { position: "absolute", left: 40, top: 35, maxWidth: "min(420px, 46%)", zIndex: 3 },
+    tagsColor: "#a38d5d",
+    copyTitleStyle: caseHeroTitleStyle,
+    href: "/case/auth-redesign",
+    copyMetaBox: { position: "absolute", left: 40, top: 35, maxWidth: "min(480px, 50%)", zIndex: 3 },
     copyStatsBox: { position: "absolute", left: 40, bottom: 40, maxWidth: "min(520px, 90%)", zIndex: 3 },
     stats: ["- 38% обращений в поддержку,", "+29% количества завершённых регистраций"],
     button: { top: BTN_FULL.top, left: BTN_FULL.left },
     subCards: [
-      { image: "/images/case1-sub1.png", bg: "#dee2e6", alt: "экран верификации — вариант 1" },
-      { image: "/images/case1-sub2.png", bg: "#282a2c", alt: "экран верификации — вариант 2" },
+      { image: "/images/cases/figma-auth-sub1.png", bg: "#dee2e6", alt: "экраны — вариант 1" },
+      { image: "/images/cases/figma-auth-sub2.png", bg: "#282a2c", alt: "экраны — вариант 2" },
     ],
   },
   {
     id: "promo-ab",
+    figmaNodeId: "2693:159550",
     layerBackground: "#191919",
     layerBackgroundImage: "/images/cases/case-promo-bg.png",
     layerPhoto: {
       src: "/images/cases/case-promo-browser.png",
       box: {
         position: "absolute",
-        inset: "6% 5% 5% 26%",
+        inset: "6% 4% 5% 24%",
       },
       imageObjectFit: "cover",
-      imageObjectPosition: "center top",
+      imageObjectPosition: "center center",
     },
     logoSrc: "/images/ecos-app-icon.png",
     logoSize: 36,
     title: "а/б тестирование посадочной страницы промо",
     company: "ECOS",
     tags: ["fintech", "web", "b2c", "2024"],
+    copyTitleStyle: caseHeroTitleStyle,
+    copyTagsLineStyle: caseHeroTagsLineStyle,
     copyMetaBox: { position: "absolute", left: 40, top: 35, maxWidth: "min(520px, 48%)", zIndex: 3 },
     copyStatsBox: { position: "absolute", left: 40, bottom: 40, maxWidth: "min(520px, 90%)", zIndex: 3 },
     stats: ["+29% количества завершённых регистраций"],
     button: { top: BTN_FULL.top, left: BTN_FULL.left },
   },
   {
-    id: "auth",
-    figmaNodeId: "2699:165519",
-    layerBackground: "rgba(57, 57, 57, 0.2)",
+    id: "verification",
+    figmaNodeId: "2693:159516",
+    /** сплошной тёмный блок + рука (без отдельного градиентного PNG — иначе «течёт» под мокап) */
+    layerBackground: "#262626",
     layerPhoto: {
-      src: "/images/cases/case-auth-phones.png",
+      src: "/images/cases/figma-case-verification-hero.png",
       box: {
         position: "absolute",
         width: "64%",
-        height: "104%",
-        right: "-5%",
-        bottom: "-6%",
+        height: "100%",
+        right: "-4%",
+        bottom: "0",
         top: "auto",
         left: "auto",
       },
@@ -153,17 +187,18 @@ export const homeCases: HomeCase[] = [
     },
     logoSrc: "/images/ecos-app-icon.png",
     logoSize: 36,
-    title: "Редизайн флоу авторизации и регистрации в fintech-продукте",
+    title: "редизайн флоу авторизации и регистрации в fintech-продукте",
     company: "ECOS",
     tags: ["fintech", "ios, android", "b2c", "2025"],
-    href: "/case/auth-redesign",
-    copyMetaBox: { position: "absolute", left: 40, top: 35, maxWidth: "min(480px, 50%)", zIndex: 3 },
+    copyTitleStyle: caseHeroTitleStyle,
+    copyTagsLineStyle: caseHeroTagsLineStyle,
+    copyMetaBox: { position: "absolute", left: 40, top: 35, maxWidth: "min(420px, 46%)", zIndex: 3 },
     copyStatsBox: { position: "absolute", left: 40, bottom: 40, maxWidth: "min(520px, 90%)", zIndex: 3 },
     stats: ["- 38% обращений в поддержку,", "+29% количества завершённых регистраций"],
     button: { top: BTN_FULL.top, left: BTN_FULL.left },
     subCards: [
-      { image: "/images/case3-sub1.png", bg: "#dee2e6", alt: "флоу авторизации" },
-      { image: "/images/case3-sub2.png", bg: "#dee2e6", alt: "регистрация" },
+      { image: "/images/cases/figma-verification-sub1.png", bg: "#dee2e6", alt: "верификация — ряд мокапов" },
+      { image: "/images/cases/figma-verification-sub2.png", bg: "#282a2c", alt: "верификация — мокап" },
     ],
   },
 ];

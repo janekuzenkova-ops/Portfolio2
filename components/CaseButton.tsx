@@ -96,8 +96,11 @@ export default function CaseButton({ top, left, right, href }: CaseButtonProps) 
           background: hovered ? "rgba(0, 0, 0, 0.55)" : "rgba(0, 0, 0, 0.4)",
           backdropFilter: "blur(25px)",
           WebkitBackdropFilter: "blur(25px)",
-          border: "none",
+          border: "1px solid rgba(255,255,255,0.12)",
           textDecoration: "none",
+          boxShadow: hovered
+            ? "0 0 48px rgba(255,255,255,0.22), 0 12px 40px rgba(0,0,0,0.35)"
+            : "0 0 36px rgba(255,255,255,0.14), 0 8px 32px rgba(0,0,0,0.25)",
         }}
       >
         <span

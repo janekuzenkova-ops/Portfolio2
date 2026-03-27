@@ -12,8 +12,8 @@ import TiltImage from "@/components/TiltImage";
 const nb = "\u00a0";
 
 export const metadata: Metadata = {
-  title: "Редизайн флоу авторизации | Кузенкова Евгения",
-  description: "Редизайн флоу авторизации и регистрации в fintech продукте ECOS",
+  title: "редизайн флоу авторизации | Кузенкова Евгения",
+  description: "редизайн флоу авторизации и регистрации в fintech-продукте ECOS",
 };
 
 function StaticImage({ src, alt, aspect }: { src: string; alt: string; aspect: string }) {
@@ -125,7 +125,7 @@ export default function AuthRedesignCase() {
           <div className="desktop-only-block">
             <StaticImage
               src="/images/case-auth/hero-title.png"
-              alt="Редизайн флоу авторизации"
+              alt="редизайн флоу авторизации и регистрации в fintech-продукте"
               aspect="1400/402"
             />
           </div>
@@ -158,8 +158,11 @@ export default function AuthRedesignCase() {
               lineHeight: 1.15,
               letterSpacing: "-0.02em",
               margin: 0,
+              whiteSpace: "nowrap",
+              overflow: "hidden",
+              textOverflow: "ellipsis",
             }}>
-              редизайн экранов авторизации
+              редизайн флоу авторизации и регистрации в fintech-продукте
             </h1>
           </div>
         </section>
@@ -169,7 +172,7 @@ export default function AuthRedesignCase() {
           <section className="px-5">
             <CaseGlowImage
               src="/images/case-auth/hero.png"
-              alt="Редизайн флоу авторизации в fintech продукте"
+              alt="редизайн флоу авторизации и регистрации в fintech-продукте"
               aspect="1400/810"
             />
           </section>

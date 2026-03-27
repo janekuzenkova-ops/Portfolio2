@@ -94,7 +94,7 @@ function CaseSubCardBlock({ card }: { card: CaseSubCard }) {
   );
 }
 
-/** слой 3: типографика как в фигме (header/reg): лого 36, ECOS 28/600, заголовок 24 /60%, теги 24 #494a4d, метрики 24 /60% */
+/** слой 3: типографика; опционально `copyTitleStyle` / `copyTagsLineStyle` в данных кейса */
 function CaseHeroForeground({
   company,
   title,
@@ -104,8 +104,25 @@ function CaseHeroForeground({
   logoSize,
   copyMetaBox,
   copyStatsBox,
-}: Pick<HomeCase, "company" | "title" | "tags" | "stats" | "logoSrc" | "logoSize" | "copyMetaBox" | "copyStatsBox">) {
+  tagsColor,
+  copyTitleStyle,
+  copyTagsLineStyle,
+}: Pick<
+  HomeCase,
+  | "company"
+  | "title"
+  | "tags"
+  | "stats"
+  | "logoSrc"
+  | "logoSize"
+  | "copyMetaBox"
+  | "copyStatsBox"
+  | "tagsColor"
+  | "copyTitleStyle"
+  | "copyTagsLineStyle"
+>) {
   const tagLine = tags.join(" · ");
+  const tagColorResolved = tagsColor ?? TAG_LINE_COLOR;
   const meta = { ...DEFAULT_META, ...copyMetaBox };
   const st = stats?.length ? { ...DEFAULT_STATS, ...copyStatsBox } : null;
   const size = logoSize ?? 36;
@@ -117,7 +134,7 @@ function CaseHeroForeground({
         style={{ ...meta, pointerEvents: "none" }}
         data-layer="case-copy"
       >
-        <div className="flex flex-col gap-3 pointer-events-auto select-text">
+        <div className="flex min-w-0 flex-col gap-3 pointer-events-auto select-text">
           <div className="flex gap-2.5 items-center">
             {logoSrc && (
               <div
@@ -132,25 +149,21 @@ function CaseHeroForeground({
             </p>
           </div>
           <h2
-            className="text-[17px] font-medium leading-snug whitespace-normal md:text-[22px] md:leading-[1.35]"
-            style={{ color: TITLE_MUTED }}
+            className={
+              copyTitleStyle
+                ? "case-hero-title-spec whitespace-normal"
+                : "text-[17px] font-medium leading-snug whitespace-normal md:text-[22px] md:leading-[1.35]"
+            }
+            style={{ color: copyTitleStyle?.color ?? TITLE_MUTED }}
           >
             {title}
           </h2>
-          <p className="hidden md:block text-[16px] font-medium leading-snug md:text-[17px]" style={{ color: TAG_LINE_COLOR }}>
+          <p
+            className="case-hero-tags-line min-w-0"
+            style={{ color: copyTagsLineStyle?.color ?? tagColorResolved }}
+          >
             {tagLine}
           </p>
-          <div className="flex flex-wrap gap-1.5 md:hidden">
-            {tags.map((tag, i) => (
-              <span
-                key={i}
-                className="text-[13px] font-medium rounded-md px-2.5 py-1"
-                style={{ color: "rgba(255,255,255,0.4)", backgroundColor: "#1e1e1e" }}
-              >
-                {tag}
-              </span>
-            ))}
-          </div>
         </div>
       </div>
       {stats && stats.length > 0 && st && (
@@ -160,8 +173,8 @@ function CaseHeroForeground({
           data-layer="case-stats"
         >
           <div
-            className="flex flex-col gap-2 pointer-events-auto select-text text-[12px] font-medium leading-snug md:text-[20px] md:leading-snug md:gap-2"
-            style={{ color: TITLE_MUTED }}
+            className="case-hero-stats-inner flex flex-col gap-2 pointer-events-auto select-text text-[12px] font-medium leading-snug md:text-[24px] md:leading-[1.25] md:gap-2"
+            style={{ color: "#FFFFFF9E" }}
           >
             {stats.map((line, i) => (
               <p key={i} className="whitespace-pre-wrap">
@@ -179,6 +192,7 @@ export default function CaseStudy({ data }: { data: HomeCase }) {
   const {
     layerBackground,
     layerBackgroundImage,
+    layerBackgroundSplit,
     layerPhoto,
     title,
     company,
@@ -191,6 +205,9 @@ export default function CaseStudy({ data }: { data: HomeCase }) {
     logoSize,
     copyMetaBox,
     copyStatsBox,
+    tagsColor,
+    copyTitleStyle,
+    copyTagsLineStyle,
     figmaNodeId,
   } = data;
 
@@ -241,15 +258,40 @@ export default function CaseStudy({ data }: { data: HomeCase }) {
         onMouseMove={handleMove}
         onMouseLeave={handleLeave}
       >
-        <div className="absolute inset-0 z-0" style={{ backgroundColor: layerBackground }} data-layer="case-bg">
+        {/* мобилка и фолбэк: одна заливка */}
+        <div
+          className="absolute inset-0 z-0 md:hidden"
+          style={{ backgroundColor: layerBackground }}
+          data-layer="case-bg-mobile"
+        >
           {layerBackgroundImage ? (
             <div
               className="absolute inset-0 bg-cover bg-center bg-no-repeat"
               style={{ backgroundImage: `url(${layerBackgroundImage})` }}
-              data-layer="case-bg-image"
+              data-layer="case-bg-image-mobile"
             />
           ) : null}
         </div>
+        {layerBackgroundSplit ? (
+          <div
+            className="absolute inset-0 z-0 hidden md:flex"
+            data-layer="case-bg-split"
+            aria-hidden
+          >
+            <div className="h-full shrink-0 overflow-hidden" style={{ width: layerBackgroundSplit.splitAt, ...layerBackgroundSplit.left }} />
+            <div className="h-full min-w-0 flex-1" style={layerBackgroundSplit.right} />
+          </div>
+        ) : (
+          <div className="absolute inset-0 z-0 hidden md:block" style={{ backgroundColor: layerBackground }} data-layer="case-bg">
+            {layerBackgroundImage ? (
+              <div
+                className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+                style={{ backgroundImage: `url(${layerBackgroundImage})` }}
+                data-layer="case-bg-image"
+              />
+            ) : null}
+          </div>
+        )}
 
         <div className="absolute inset-0 z-[1] pointer-events-none rounded-[inherit]" aria-hidden data-layer="case-glow-wrap">
           <div
@@ -285,6 +327,9 @@ export default function CaseStudy({ data }: { data: HomeCase }) {
           logoSize={logoSize}
           copyMetaBox={copyMetaBox}
           copyStatsBox={copyStatsBox}
+          tagsColor={tagsColor}
+          copyTitleStyle={copyTitleStyle}
+          copyTagsLineStyle={copyTagsLineStyle}
         />
 
         <div data-layer="case-cta" className="contents">
