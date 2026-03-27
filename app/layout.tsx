@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Koulen } from "next/font/google";
 import "./globals.css";
 import SmoothScroll from "@/components/SmoothScroll";
+import ScrollToTop from "@/components/ScrollToTop";
 
 const koulen = Koulen({
   weight: "400",
@@ -33,6 +34,7 @@ export default function RootLayout({
         }}
       >
         <SmoothScroll />
+        <ScrollToTop />
         {children}
       </body>
     </html>
