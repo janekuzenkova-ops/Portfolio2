@@ -1,14 +1,8 @@
 import Image from "next/image";
-
-const cards = [
-  { src: "/images/concept-1.png", alt: "Concept 1" },
-  { src: "/images/concept-2.png", alt: "Concept 2" },
-  { src: "/images/concept-3.png", alt: "Concept 3" },
-  { src: "/images/concept-4.png", alt: "Concept 4" },
-];
+import { conceptCards } from "@/content/home";
 
 export default function ConceptCarousel() {
-  const oneSet = [...cards, ...cards];
+  const oneSet = [...conceptCards, ...conceptCards];
   const allCards = [...oneSet, ...oneSet];
 
   return (
@@ -23,18 +17,20 @@ export default function ConceptCarousel() {
     >
       <div className="flex gap-4 animate-marquee w-fit">
         {allCards.map((card, i) => (
-          <div
-            key={i}
-            className="shrink-0 w-[338px] h-[400px] carousel-card rounded-2xl overflow-hidden bg-[#dee2e6] cursor-pointer group"
+          <article
+            key={`${card.id}-${i}`}
+            className="shrink-0 w-[338px] h-[400px] carousel-card rounded-2xl overflow-hidden bg-[#dee2e6] cursor-pointer group flex flex-col"
           >
-            <Image
-              src={card.src}
-              alt={card.alt}
-              width={676}
-              height={800}
-              className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-[1.05]"
-            />
-          </div>
+            <div className="relative flex-1 min-h-0 w-full">
+              <Image
+                src={card.image}
+                alt={card.alt}
+                width={676}
+                height={800}
+                className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-[1.05]"
+              />
+            </div>
+          </article>
         ))}
       </div>
     </section>

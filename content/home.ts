@@ -1,6 +1,8 @@
 /**
- * главная страница — единая точка правки: текст, ссылки, картинки, позиции кнопки/оверлея.
- * меняешь здесь → верстка подхватывает без перерисовки макета в фигме как единственного источника.
+ * главная — правка в одном месте.
+ * кейс-герой: слой 1 фон → слой 2 фото (рука/телефон, box в `layerPhoto.box` — двигай px/%) → слой 3 HTML (лого+текст по размерам из фигмы).
+ * подложи отдельный PNG без текста в `layerPhoto.src`, когда будет готов.
+ * figma: https://www.figma.com/design/vCzZlNer2Fixkg9ibPRxR0/?node-id=2693-159496
  */
 
 import type { CSSProperties } from "react";
@@ -36,28 +38,73 @@ export type CaseSubCard = {
   caption?: string;
 };
 
+/** слой 2: только картинка устройства/руки; `box` = absolute-позиция внутри карточки 1400×810 */
+export type CasePhotoLayer = {
+  src: string;
+  box: CSSProperties;
+  /** на мобиле иначе; если нет — см. `.case-photo-layer` в globals */
+  boxMobile?: CSSProperties;
+  imageObjectFit?: "contain" | "cover";
+  imageObjectPosition?: string;
+};
+
 export type HomeCase = {
   id: string;
-  mockupImage: string;
+  /** слой 1: заливка под картинкой фона */
+  layerBackground: string;
+  /** слой 1b: опционально PNG/JPG фона (cover), путь из public */
+  layerBackgroundImage?: string;
+  /** слой 2 — замени `src` на вырез без текста, когда приложишь файл */
+  layerPhoto: CasePhotoLayer;
   title: string;
   company: string;
   tags: string[];
   href?: string;
+  /** слой 3: блок лого+заголовок+теги (фигма ~40×35 от карточки) */
+  copyMetaBox?: CSSProperties;
+  /** слой 3: метрики снизу слева */
+  copyStatsBox?: CSSProperties;
+  stats?: string[];
+  /** лого 36×36 в макете */
+  logoSrc?: string;
+  logoSize?: number;
+  /** кнопка «смотреть кейс», % от всей карточки */
   button: { top: string; left?: string; right?: string };
-  /** блок текста на десктопе поверх мокапа (копируемый) */
-  overlay: CSSProperties;
+  figmaNodeId?: string;
   subCards?: CaseSubCard[];
 };
+
+const BTN_FULL = { top: "58.4%", left: "73.86%" } as const;
 
 export const homeCases: HomeCase[] = [
   {
     id: "verification",
-    mockupImage: "/images/case1-header.png",
+    figmaNodeId: "2693:159516",
+    layerBackground: "#191919",
+    layerBackgroundImage: "/images/cases/case-verification-bg.png",
+    layerPhoto: {
+      src: "/images/cases/case-verification-hand.png",
+      box: {
+        position: "absolute",
+        width: "58%",
+        height: "100%",
+        right: "-2%",
+        bottom: "0",
+        top: "auto",
+        left: "auto",
+      },
+      imageObjectFit: "contain",
+      imageObjectPosition: "center bottom",
+    },
+    logoSrc: "/images/ecos-app-icon.png",
+    logoSize: 36,
     title: "редизайн экрана верификации",
     company: "ECOS",
     tags: ["fintech", "ios, android", "b2c", "2025"],
-    button: { top: "58.5%", right: "180px" },
-    overlay: { position: "absolute", left: "40px", bottom: "48px", maxWidth: "min(520px, 45%)" },
+    copyMetaBox: { position: "absolute", left: 40, top: 35, maxWidth: "min(420px, 46%)", zIndex: 3 },
+    copyStatsBox: { position: "absolute", left: 40, bottom: 40, maxWidth: "min(520px, 90%)", zIndex: 3 },
+    stats: ["- 38% обращений в поддержку,", "+29% количества завершённых регистраций"],
+    button: { top: BTN_FULL.top, left: BTN_FULL.left },
     subCards: [
       { image: "/images/case1-sub1.png", bg: "#dee2e6", alt: "экран верификации — вариант 1" },
       { image: "/images/case1-sub2.png", bg: "#282a2c", alt: "экран верификации — вариант 2" },
@@ -65,22 +112,55 @@ export const homeCases: HomeCase[] = [
   },
   {
     id: "promo-ab",
-    mockupImage: "/images/case2-header.png",
+    layerBackground: "#191919",
+    layerBackgroundImage: "/images/cases/case-promo-bg.png",
+    layerPhoto: {
+      src: "/images/cases/case-promo-browser.png",
+      box: {
+        position: "absolute",
+        inset: "6% 5% 5% 26%",
+      },
+      imageObjectFit: "cover",
+      imageObjectPosition: "center top",
+    },
+    logoSrc: "/images/ecos-app-icon.png",
+    logoSize: 36,
     title: "а/б тестирование посадочной страницы промо",
     company: "ECOS",
     tags: ["fintech", "web", "b2c", "2024"],
-    button: { top: "58.5%", right: "180px" },
-    overlay: { position: "absolute", left: "40px", bottom: "48px", maxWidth: "min(520px, 45%)" },
+    copyMetaBox: { position: "absolute", left: 40, top: 35, maxWidth: "min(520px, 48%)", zIndex: 3 },
+    copyStatsBox: { position: "absolute", left: 40, bottom: 40, maxWidth: "min(520px, 90%)", zIndex: 3 },
+    stats: ["+29% количества завершённых регистраций"],
+    button: { top: BTN_FULL.top, left: BTN_FULL.left },
   },
   {
     id: "auth",
-    mockupImage: "/images/case3-header.png",
-    title: "редизайн флоу авторизации и регистрации",
+    figmaNodeId: "2699:165519",
+    layerBackground: "rgba(57, 57, 57, 0.2)",
+    layerPhoto: {
+      src: "/images/cases/case-auth-phones.png",
+      box: {
+        position: "absolute",
+        width: "64%",
+        height: "104%",
+        right: "-5%",
+        bottom: "-6%",
+        top: "auto",
+        left: "auto",
+      },
+      imageObjectFit: "contain",
+      imageObjectPosition: "center bottom",
+    },
+    logoSrc: "/images/ecos-app-icon.png",
+    logoSize: 36,
+    title: "Редизайн флоу авторизации и регистрации в fintech-продукте",
     company: "ECOS",
     tags: ["fintech", "ios, android", "b2c", "2025"],
     href: "/case/auth-redesign",
-    button: { top: "58.5%", right: "180px" },
-    overlay: { position: "absolute", left: "40px", bottom: "48px", maxWidth: "min(520px, 45%)" },
+    copyMetaBox: { position: "absolute", left: 40, top: 35, maxWidth: "min(480px, 50%)", zIndex: 3 },
+    copyStatsBox: { position: "absolute", left: 40, bottom: 40, maxWidth: "min(520px, 90%)", zIndex: 3 },
+    stats: ["- 38% обращений в поддержку,", "+29% количества завершённых регистраций"],
+    button: { top: BTN_FULL.top, left: BTN_FULL.left },
     subCards: [
       { image: "/images/case3-sub1.png", bg: "#dee2e6", alt: "флоу авторизации" },
       { image: "/images/case3-sub2.png", bg: "#dee2e6", alt: "регистрация" },

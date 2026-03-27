@@ -1,33 +1,9 @@
 "use client";
 
 import { useCallback, useRef } from "react";
+import { experienceContent } from "@/content/home";
 
-const experiences = [
-  {
-    company: "алтгту",
-    role: "UX UI Designer",
-    period: "Ноябрь 2010 - Январь 2019",
-    tags: ["edtech", "web", "ui/ux", "visual design"],
-  },
-  {
-    company: "maximus",
-    role: "UX UI Designer",
-    period: "Январь 2019 - Ноябрь 2021",
-    tags: ["e-commerce", "ui/ux", "web/mobile"],
-  },
-  {
-    company: "сплав",
-    role: "UX UI Designer",
-    period: "Декабрь 2021 - Декабрь 2022",
-    tags: ["fintech", "ui/ux", "a/b", "product design"],
-  },
-  {
-    company: "ecos",
-    role: "Product Designer",
-    period: "Январь 2023 - наст. время",
-    tags: ["fintech", "ai", "a/b", "crypto"],
-  },
-];
+const experiences = experienceContent.map((e) => ({ ...e }));
 
 const jiggleOffsets = [
   { x: 3, y: -2, r: 1.5 },
@@ -120,7 +96,7 @@ function GlowCard({ exp, idx }: { exp: typeof experiences[number]; idx: number }
             key={j}
             className={`exp-chip exp-chip-${idx}-${j} exp-chip-tag`}
             style={{
-              backgroundColor: "#313131",
+              backgroundColor: "#323232",
               fontSize: "21px",
               fontWeight: 500,
               color: "#ffffff",

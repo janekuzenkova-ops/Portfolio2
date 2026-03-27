@@ -77,7 +77,10 @@ export default function CaseButton({ top, left, right, href }: CaseButtonProps) 
     >
       <a
         ref={btnRef}
-        href={href || "#"}
+        href={href ?? "#"}
+        onClick={(e) => {
+          if (!href) e.preventDefault();
+        }}
         style={{
           width: `${btnSize}px`,
           height: `${btnSize}px`,

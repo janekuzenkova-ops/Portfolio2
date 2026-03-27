@@ -12,7 +12,7 @@ export default function Error({
       style={{
         minHeight: "100vh",
         padding: 24,
-        background: "#111",
+        background: "#0a0a0a",
         color: "#eee",
         fontFamily: "system-ui, sans-serif",
       }}

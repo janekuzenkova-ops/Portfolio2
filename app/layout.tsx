@@ -14,12 +14,12 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="ru" suppressHydrationWarning style={{ backgroundColor: "#111111" }}>
+    <html lang="ru" suppressHydrationWarning style={{ backgroundColor: "#0a0a0a" }}>
       <body
-        className="bg-[#111111] text-white antialiased"
+        className="bg-[#0a0a0a] text-white antialiased"
         suppressHydrationWarning
         style={{
-          backgroundColor: "#111111",
+          backgroundColor: "#0a0a0a",
           color: "#ffffff",
           fontFamily:
             '-apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Roboto, "Helvetica Neue", sans-serif',

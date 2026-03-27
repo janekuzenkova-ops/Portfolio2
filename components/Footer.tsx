@@ -1,12 +1,5 @@
 import Link from "next/link";
-
-const socialLinks = [
-  { label: "telegram", href: "https://t.me/jane_kuzenkova" },
-  { label: "e-mail", href: "mailto:p-janni@bk.ru" },
-  { label: "linkedin", href: "https://www.linkedin.com/in/jane-kuzenkova/" },
-  { label: "dribbble", href: "https://dribbble.com/Kuzenkova" },
-  { label: "cv", href: "/cv.pdf" },
-];
+import { footerContent } from "@/content/home";
 
 export default function Footer() {
   return (
@@ -17,12 +10,12 @@ export default function Footer() {
         marginTop: "140px",
         paddingTop: "20px",
         paddingBottom: "20px",
-        color: "#484a4d",
+        color: "#494a4d",
       }}
     >
       <div className="flex items-center justify-between footer-inner">
         <div className="flex items-center gap-10 footer-links">
-          {socialLinks.map((link) => (
+          {footerContent.links.map((link) => (
             <a
               key={link.label}
               href={link.href}
@@ -54,7 +47,7 @@ export default function Footer() {
         </div>
 
         <Link href="/" className="footer-link footer-copy">
-          2026 © евгения кузенкова
+          {footerContent.copyright}
         </Link>
       </div>
     </footer>

@@ -10,7 +10,7 @@ import { homeCases } from "@/content/home";
 export default function Home() {
   return (
     <ScaleWrapper>
-      <main className="min-h-screen" style={{ backgroundColor: "#111111" }}>
+      <main className="min-h-screen" style={{ backgroundColor: "#0a0a0a" }}>
         <Navbar />
         <Hero />
         <div style={{ height: "40px" }} />

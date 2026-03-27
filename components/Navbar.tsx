@@ -2,6 +2,7 @@
 
 import { useCallback, useState } from "react";
 import { usePathname } from "next/navigation";
+import { navContent } from "@/content/home";
 
 const NAV_OFFSET = -100;
 
@@ -49,29 +50,25 @@ export default function Navbar() {
     >
       {/* Desktop */}
       <div className="desktop-only items-center justify-between">
-        <div className="flex items-center gap-10">
+        <div className="flex items-center gap-[40px]">
           <a href="#top" onClick={scrollTo} className="nav-link text-[28px] font-medium">
-            кузенкова евгения
+            {navContent.brand}
           </a>
-          <a href="#cases" onClick={scrollTo} className="nav-link text-[28px] font-medium">
-            проекты
-          </a>
-          <a href="#experience" onClick={scrollTo} className="nav-link text-[28px] font-medium">
-            обо мне
-          </a>
-          <a href="#concepts" onClick={scrollTo} className="nav-link text-[28px] font-medium">
-            концепты
-          </a>
+          {navContent.links.map((item) => (
+            <a key={item.href} href={item.href} onClick={scrollTo} className="nav-link text-[28px] font-medium">
+              {item.label}
+            </a>
+          ))}
         </div>
-        <a href="#footer" onClick={scrollTo} className="nav-link text-[28px] font-medium">
-          контакты
+        <a href={navContent.contactsHref} onClick={scrollTo} className="nav-link text-[28px] font-medium">
+          {navContent.contactsLabel}
         </a>
       </div>
 
       {/* Mobile */}
       <div className="mobile-only items-center justify-between">
         <a href="#top" onClick={scrollTo} className="nav-link text-[18px] font-medium">
-          кузенкова евгения
+          {navContent.brand}
         </a>
         <button
           onClick={() => setMenuOpen(!menuOpen)}
@@ -99,10 +96,14 @@ export default function Navbar() {
           className="mobile-only flex-col gap-4 pt-4"
           style={{ borderTop: "1px solid rgba(255,255,255,0.06)", marginTop: "12px" }}
         >
-          <a href="#cases" onClick={scrollTo} className="nav-link text-[18px] font-medium">проекты</a>
-          <a href="#experience" onClick={scrollTo} className="nav-link text-[18px] font-medium">обо мне</a>
-          <a href="#concepts" onClick={scrollTo} className="nav-link text-[18px] font-medium">концепты</a>
-          <a href="#footer" onClick={scrollTo} className="nav-link text-[18px] font-medium">контакты</a>
+          {navContent.links.map((item) => (
+            <a key={item.href} href={item.href} onClick={scrollTo} className="nav-link text-[18px] font-medium">
+              {item.label}
+            </a>
+          ))}
+          <a href={navContent.contactsHref} onClick={scrollTo} className="nav-link text-[18px] font-medium">
+            {navContent.contactsLabel}
+          </a>
         </div>
       )}
     </nav>
