@@ -62,7 +62,11 @@ body {
   /* 24px между секцией «опыт работы» и футером */
   .footer-section { margin-top: 24px !important; }
   .footer-inner { flex-direction: column !important; gap: 16px !important; }
-  .footer-links { flex-wrap: wrap !important; gap: 16px !important; }
+  .footer-links {
+    flex-wrap: wrap !important;
+    gap: 16px !important;
+    margin-top: 20px !important;
+  }
   .footer-copy { font-size: 16px !important; }
 
   .case-nav-spacer { height: 40px !important; }

@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 const socialLinks = [
   { label: "telegram", href: "https://t.me/jane_kuzenkova" },
   { label: "e-mail", href: "mailto:p-janni@bk.ru" },
@@ -51,9 +53,9 @@ export default function Footer() {
           ))}
         </div>
 
-        <span className="footer-copy" style={{ color: "#484a4d", fontSize: "28px", fontWeight: 500 }}>
+        <Link href="/" className="footer-link footer-copy">
           2026 © евгения кузенкова
-        </span>
+        </Link>
       </div>
     </footer>
   );

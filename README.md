@@ -40,6 +40,7 @@ public/
 ```bash
 npm install
 npm run dev
+npm run lint   # tsc --noEmit (next lint в Next 15 без своего eslint-конфига открывает интерактив и падает)
 # порт 3001: `npm run dev:3001` (сервер должен быть запущен — иначе в браузере ERR_CONNECTION_REFUSED)
 ```
 
