@@ -40,9 +40,13 @@ public/
 ```bash
 npm install
 npm run dev
+# другой порт: npm run dev -- -p 3001
 ```
 
 → http://localhost:3000
+
+- если **«страница не работает»** на localhost: часто порт занят старым `node` — `lsof -i :3001` (или `:3000`), затем `kill -9 <PID>` и снова `npm run dev`
+- в `next.config.ts` задан `outputFileTracingRoot: process.cwd()`, чтобы Next не путал корень проекта с `~/package-lock.json`
 
 → прод: [kuzenkova-portfolio.vercel.app](https://kuzenkova-portfolio.vercel.app/)
 
