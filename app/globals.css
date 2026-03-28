@@ -35,35 +35,740 @@ body {
   overflow-x: hidden;
 }
 
-/* preflight задаёт h2 font-size: inherit — без этого заголовок кейса тянет 16px с родителя */
-.case-hero-meta h2.case-hero-title-spec {
-  font-size: 24px !important;
-  font-weight: 500 !important;
-  line-height: 1.35 !important;
-  white-space: nowrap !important;
-  overflow: hidden !important;
-  text-overflow: ellipsis !important;
-  min-width: 0 !important;
+/* ----- кейс auth-redesign: вёрстка текста как в Figma (Кейс/b, ~335px лейблы) ----- */
+:root {
+  --case-figma-rule: rgba(221, 225, 229, 0.5);
+}
+
+.case-figma-row {
+  display: grid;
+  gap: 16px;
+  align-items: start;
+}
+
+.case-figma-label {
+  font-size: 22px;
+  font-weight: 600;
+  line-height: 36px;
+  color: #494a4d;
+  text-transform: lowercase;
+  margin: 0;
 }
 
 @media (min-width: 768px) {
-  .case-hero-stats .case-hero-stats-inner {
-    font-size: 24px !important;
-    font-weight: 500 !important;
-    line-height: 1.25 !important;
+  .case-figma-row {
+    grid-template-columns: 335px minmax(0, 1fr);
+    gap: 20px;
+    align-items: stretch;
+  }
+
+  .case-figma-content {
+    align-self: start;
+    min-width: 0;
+  }
+
+  /*
+   * липкий лейбл: колонка тянется на высоту ряда, padding-bottom 30px — нижняя граница sticky;
+   * последние 30px контента справа скроллятся, лейбл уже стоит.
+   */
+  .case-figma-label-track {
+    align-self: stretch;
+    min-height: 0;
+    padding-bottom: 30px;
+    box-sizing: border-box;
+  }
+
+  /* top — под навбар; bottom — не прилипать к низу viewport (все лейблы секций) */
+  .case-figma-label {
+    font-size: 28px;
+    position: sticky;
+    top: 96px;
+    bottom: 40px;
+    z-index: 1;
+    background-color: #0a0a0a;
+    padding-right: 8px;
+  }
+
+  /* «контекст»: h2, обычный поток — не sticky */
+  .case-figma-label-track--static {
+    align-self: start;
+    padding-bottom: 0;
+  }
+
+  .case-figma-label--static {
+    position: static;
+    top: auto;
+    bottom: auto;
+    z-index: auto;
+    background-color: transparent;
+    padding-right: 0;
   }
 }
 
-/* строка тегов: fintech · ios… — не чипы, с точками-сепараторами; preflight тянет 16px с родителя */
-.case-hero-meta p.case-hero-tags-line {
-  font-size: 16px !important;
-  font-weight: 500 !important;
-  line-height: 1.25 !important;
-  margin: 0 !important;
+.case-figma-body {
+  font-size: 18px;
+  line-height: 28px;
+  letter-spacing: -0.2px;
+  color: rgba(255, 255, 255, 0.8);
+  margin: 0;
 }
+
+/* отступ после абзаца «Мобильное приложение ECOS…» до блока «проблема» */
+.case-figma-body--context-after {
+  margin-bottom: 100px;
+}
+
+/* между первым кадром (герой) и секцией «контекст» — не .case-spacer (на мобиле у него !important 12px) */
+.case-gap--hero-to-context {
+  height: 100px;
+  flex-shrink: 0;
+}
+
+/* два серых кадра Concept после логина (Figma 2941:102077) */
+.case-concept-pair-section {
+  margin-top: 20px;
+}
+
+.case-concept-pair-grid {
+  display: grid;
+  gap: 16px;
+  grid-template-columns: 1fr;
+}
+
 @media (min-width: 768px) {
-  .case-hero-meta p.case-hero-tags-line {
-    font-size: 24px !important;
+  .case-concept-pair-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+/* до блока «исследование — 01» / «коридорное тестирование» */
+.case-gap--concept-to-research {
+  height: 100px;
+  flex-shrink: 0;
+}
+
+/* инсайты исследование-01 → кадр img2-signup; внутри той же section + inline height в TSX — иначе зазор не виден */
+.case-gap--research1-to-signup {
+  display: block;
+  width: 100%;
+  height: 100px;
+  min-height: 100px;
+  flex-shrink: 0;
+  box-sizing: border-box;
+}
+
+/* кадр img2-signup → «исследование - 02» */
+.case-gap--signup-to-research2 {
+  display: block;
+  width: 100%;
+  height: 100px;
+  min-height: 100px;
+  flex-shrink: 0;
+  box-sizing: border-box;
+}
+
+/* конец исследования-02 → img3-verify */
+.case-gap--research2-to-verify {
+  display: block;
+  width: 100%;
+  height: 100px;
+  min-height: 100px;
+  flex-shrink: 0;
+  box-sizing: border-box;
+}
+
+/* img3-verify → img4-cards (кадр к кадру — 20px, не секционные 100) */
+.case-gap--verify-to-cards {
+  display: block;
+  width: 100%;
+  height: 20px;
+  min-height: 20px;
+  flex-shrink: 0;
+  box-sizing: border-box;
+}
+
+/* img4-cards → «что сделала» */
+.case-gap--cards-to-what-done {
+  display: block;
+  width: 100%;
+  height: 100px;
+  min-height: 100px;
+  flex-shrink: 0;
+  box-sizing: border-box;
+}
+
+/* «что сделала» (последний пункт 06) → img5-password */
+.case-gap--what-done-to-password {
+  display: block;
+  width: 100%;
+  height: 100px;
+  min-height: 100px;
+  flex-shrink: 0;
+  box-sizing: border-box;
+}
+
+/* img5-password → блок «результат» (карточки) */
+.case-gap--password-to-result {
+  display: block;
+  width: 100%;
+  height: 100px;
+  min-height: 100px;
+  flex-shrink: 0;
+  box-sizing: border-box;
+}
+
+/* до/после блока «предыдущий / следующий кейс»: 80px сверху; снизу до футера — см. .case-footer-offset */
+.case-nav-spacer {
+  height: 80px;
+  flex-shrink: 0;
+}
+
+/* Footer inline marginTop 140px → 60px до копирайта: 140 − 80 */
+.case-footer-offset {
+  margin-top: -80px;
+}
+
+/* исследование 01/02: заголовок→лид 24px; лид→ряд метрик 57px; метрики→блок ниже 57px (класс --metrics-68 — историческое имя) */
+.case-research-block--metrics-68 {
+  gap: 0;
+}
+
+.case-research-block--metrics-68 .case-research-title {
+  margin-bottom: 24px;
+}
+
+.case-research-block--metrics-68 .case-research-lead {
+  margin-bottom: 57px;
+}
+
+.case-research-block--metrics-68 .case-stat-row {
+  margin-bottom: 57px;
+}
+
+@media (min-width: 768px) {
+  .case-figma-body {
+    font-size: 20px;
+    line-height: 32px;
+  }
+}
+
+.case-figma-problem-grid {
+  display: grid;
+  gap: 16px;
+  grid-template-columns: 1fr;
+}
+
+@media (min-width: 768px) {
+  .case-figma-problem-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+/* итог кейса: 2×2, зазор между карточками 20px (Figma) */
+.case-result-grid {
+  display: grid;
+  gap: 20px;
+  grid-template-columns: 1fr;
+}
+
+@media (min-width: 768px) {
+  .case-result-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.case-figma-problem-card {
+  background: #282a2c;
+  border-radius: 24px;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  font-size: 16px;
+}
+
+@media (min-width: 768px) {
+  .case-figma-problem-card {
+    border-radius: 30px;
+    padding: 40px;
+    font-size: 20px;
+  }
+}
+
+.case-figma-card-num {
+  color: #b5b9c7;
+  font-size: 16px;
+  line-height: 28px;
+  letter-spacing: -0.2px;
+  margin: 0;
+}
+
+@media (min-width: 768px) {
+  .case-figma-card-num {
+    font-size: 20px;
+    line-height: 32px;
+  }
+}
+
+.case-figma-card-title {
+  color: #fff;
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 22px;
+  margin: 0;
+}
+
+@media (min-width: 768px) {
+  .case-figma-card-title {
+    font-size: 20px;
+    line-height: 24px;
+  }
+}
+
+.case-figma-card-desc {
+  color: #b5b9c7;
+  font-size: 15px;
+  line-height: 22px;
+  margin: 0;
+}
+
+@media (min-width: 768px) {
+  .case-figma-card-desc {
+    font-size: 20px;
+    line-height: 26px;
+  }
+}
+
+.case-figma-card-em {
+  color: #fff;
+  font-weight: 600;
+}
+
+.case-stat-row {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+@media (min-width: 768px) {
+  .case-stat-row {
+    flex-direction: row;
+    gap: 16px;
+  }
+
+  .case-stat-row > * {
+    flex: 1;
+    min-width: 0;
+  }
+}
+
+.case-figma-metric-card {
+  background: #282a2c;
+  border-radius: 24px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+@media (min-width: 768px) {
+  .case-figma-metric-card {
+    border-radius: 30px;
+    padding: 40px;
+  }
+}
+
+.case-figma-metric-value {
+  color: #b5b9c7;
+  font-size: 16px;
+  line-height: 28px;
+  letter-spacing: -0.2px;
+  margin: 0;
+}
+
+.case-figma-metric-label {
+  color: #fff;
+  font-weight: 600;
+  font-size: 15px;
+  line-height: 22px;
+  margin: 0;
+}
+
+@media (min-width: 768px) {
+  .case-figma-metric-value {
+    font-size: 20px;
+    line-height: 32px;
+  }
+
+  .case-figma-metric-label {
+    font-size: 20px;
+    line-height: 24px;
+  }
+}
+
+.case-task-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.case-task-primary {
+  font-size: 22px;
+  font-weight: 500;
+  line-height: 1.35;
+  color: #fff;
+  letter-spacing: -0.2px;
+  margin: 0;
+  text-transform: lowercase;
+}
+
+@media (min-width: 768px) {
+  .case-task-primary {
+    font-size: 28px;
+    line-height: 40px;
+  }
+}
+
+.case-task-secondary {
+  font-size: 17px;
+  line-height: 28px;
+  letter-spacing: -0.2px;
+  color: rgba(255, 255, 255, 0.7);
+  /* после «подтолкнуть пользователей…» до кадра img-info */
+  margin: 0 0 104px;
+}
+
+@media (min-width: 768px) {
+  .case-task-secondary {
+    font-size: 20px;
+    line-height: 32px;
+  }
+}
+
+.case-research-block {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+/* иначе поздний `gap: 24px` перебивает `gap: 0` у --metrics-68 → двойной зазор до лида */
+.case-research-block.case-research-block--metrics-68 {
+  gap: 0;
+}
+
+.case-research-title {
+  font-size: 22px;
+  font-weight: 500;
+  line-height: 36px;
+  color: #fff;
+  letter-spacing: -0.2px;
+  margin: 0;
+  text-transform: lowercase;
+}
+
+@media (min-width: 768px) {
+  .case-research-title {
+    font-size: 28px;
+    line-height: 40px;
+  }
+}
+
+.case-research-lead {
+  margin: 0;
+}
+
+.case-insights-section {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.case-insights-section--tight-top {
+  margin-top: 16px;
+}
+
+.case-insights-section--post-funnel {
+  margin-top: 64px;
+}
+
+.case-insights-heading {
+  font-size: 22px;
+  font-weight: 500;
+  line-height: 36px;
+  color: #fff;
+  letter-spacing: -0.2px;
+  margin: 0;
+  text-transform: lowercase;
+}
+
+@media (min-width: 768px) {
+  .case-insights-heading {
+    font-size: 28px;
+    line-height: 40px;
+  }
+}
+
+/* списки 01/02…: gap 20px между строками, линия rgba(221,225,229,0.5), pb 24px; последняя без border (как в Figma) */
+.case-figma-list-rows {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  width: 100%;
+}
+
+.case-figma-numbered-wrap:not(:last-child) {
+  padding-bottom: 24px;
+  border-bottom: 1px solid var(--case-figma-rule);
+}
+
+.case-figma-numbered-wrap:last-child {
+  padding-bottom: 24px;
+}
+
+.case-figma-numbered-row {
+  display: flex;
+  gap: 20px;
+  align-items: flex-start;
+}
+
+@media (min-width: 768px) {
+  .case-figma-numbered-row {
+    gap: 28px;
+  }
+}
+
+.case-figma-numbered-num {
+  flex-shrink: 0;
+  font-weight: 700;
+  font-size: 18px;
+  line-height: 28px;
+  letter-spacing: -0.2px;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+@media (min-width: 768px) {
+  .case-figma-numbered-num {
+    font-size: 20px;
+    line-height: 32px;
+  }
+}
+
+.case-figma-numbered-text {
+  font-size: 16px;
+  line-height: 26px;
+  letter-spacing: -0.2px;
+  color: rgba(255, 255, 255, 0.9);
+  margin: 0;
+}
+
+@media (min-width: 768px) {
+  .case-figma-numbered-text {
+    font-size: 20px;
+    line-height: 32px;
+  }
+}
+
+.case-funnel-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.case-funnel-item {
+  padding-bottom: 24px;
+  border-bottom: 1px solid var(--case-figma-rule);
+  margin: 0;
+}
+
+.case-funnel-inner {
+  display: flex;
+  gap: 20px;
+  align-items: flex-start;
+}
+
+@media (min-width: 768px) {
+  .case-funnel-inner {
+    gap: 28px;
+  }
+}
+
+.case-funnel-metric {
+  flex: 0 0 auto;
+  width: 100px;
+  font-size: 16px;
+  line-height: 28px;
+  letter-spacing: -0.2px;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.9);
+  margin: 0;
+}
+
+@media (min-width: 768px) {
+  .case-funnel-metric {
+    font-size: 20px;
+    line-height: 32px;
+    width: 108px;
+  }
+}
+
+.case-funnel-metric-main {
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.case-funnel-metric-delta {
+  color: rgba(255, 255, 255, 0.4);
+  font-weight: 700;
+}
+
+.case-funnel-step {
+  flex: 1;
+  min-width: 0;
+  font-size: 16px;
+  line-height: 26px;
+  letter-spacing: -0.2px;
+  font-weight: 400;
+  color: rgba(255, 255, 255, 0.9);
+  margin: 0;
+}
+
+@media (min-width: 768px) {
+  .case-funnel-step {
+    font-size: 20px;
+    line-height: 32px;
+  }
+}
+
+.case-hero-intro {
+  padding-top: 120px;
+  padding-bottom: 120px;
+  box-sizing: border-box;
+}
+
+.case-hero-text-right {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  text-align: left;
+}
+
+.case-hero-text-left {
+  text-align: left;
+  align-self: flex-start;
+  width: 100%;
+}
+
+.case-hero-text-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  width: 100%;
+  max-width: 1400px;
+  margin: 0;
+}
+
+@media (min-width: 768px) {
+  .case-hero-text-grid {
+    flex-direction: row;
+    gap: 20px;
+    align-items: flex-start;
+  }
+
+  .case-hero-text-left {
+    width: 335px;
+    flex-shrink: 0;
+  }
+
+  .case-hero-text-right {
+    flex: 1;
+    min-width: 0;
+    gap: 40px;
+  }
+}
+
+.case-hero-brand-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.case-hero-ecos {
+  font-size: 28px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: #fff;
+}
+
+@media (min-width: 768px) {
+  .case-hero-ecos {
+    font-size: 36px;
+  }
+}
+
+.case-hero-tags {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  font-size: 18px;
+  font-weight: 500;
+  line-height: 1.3;
+  color: #494a4d;
+}
+
+@media (min-width: 768px) {
+  .case-hero-tags {
+    font-size: 24px;
+  }
+}
+
+.case-hero-h1 {
+  font-size: clamp(28px, 6vw, 48px);
+  font-weight: 600;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  margin: 0;
+  color: rgba(255, 255, 255, 0.8);
+  text-transform: lowercase;
+}
+
+.case-hero-lead {
+  font-size: 16px;
+  line-height: 26px;
+  letter-spacing: -0.2px;
+  color: rgba(255, 255, 255, 0.8);
+  margin: 0;
+  max-width: 870px;
+}
+
+.case-hero-lead-strong {
+  font-weight: 600;
+}
+
+@media (min-width: 768px) {
+  .case-hero-lead {
+    font-size: 20px;
+    line-height: 32px;
+  }
+}
+
+.case-figma-caption {
+  margin-top: 14px;
+  font-size: 15px;
+  line-height: 1.55;
+  color: rgba(255, 255, 255, 0.62);
+  max-width: 1200px;
+}
+
+.case-spacer--section {
+  height: 56px;
+}
+
+@media (min-width: 768px) {
+  .case-spacer--section {
+    height: 80px;
   }
 }
 
@@ -89,41 +794,6 @@ body {
   .case-hero-card {
     min-height: 280px;
   }
-  .case-photo-layer {
-    inset: 0 !important;
-    width: 100% !important;
-    height: 100% !important;
-    left: 0 !important;
-    right: 0 !important;
-    top: 0 !important;
-    bottom: 0 !important;
-    justify-content: center !important;
-  }
-  .case-photo-native {
-    width: 100% !important;
-    height: 100% !important;
-    max-width: none !important;
-    object-fit: cover !important;
-    object-position: 78% center !important;
-    transform: scale(1.08) translateX(-4%) !important;
-  }
-  /* промо: отдельный PNG браузера — не тянуть кадрирование под старый композитный слой */
-  .case-study-section[data-case-id="promo-ab"] .case-photo-native {
-    object-position: center 28% !important;
-    transform: scale(1.05) translateX(0) !important;
-  }
-  .case-hero-meta,
-  .case-hero-stats {
-    left: 16px !important;
-    right: 16px !important;
-    max-width: none !important;
-  }
-  .case-hero-meta {
-    top: 16px !important;
-  }
-  .case-hero-stats {
-    bottom: 16px !important;
-  }
   .exp-grid {
     flex-direction: column !important;
     gap: 12px !important;
@@ -137,23 +807,125 @@ body {
 
   /* 24px между секцией «опыт работы» и футером */
   .footer-section { margin-top: 24px !important; }
-  .footer-inner { flex-direction: column !important; gap: 16px !important; }
-  .footer-links {
-    flex-wrap: wrap !important;
+  .footer-inner {
+    flex-direction: column !important;
+    align-items: center !important;
     gap: 16px !important;
-    margin-top: 20px !important;
   }
-  .footer-copy { font-size: 16px !important; }
+  .footer-links {
+    flex-wrap: nowrap !important;
+    justify-content: center !important;
+    gap: 10px !important;
+    margin-top: 20px !important;
+    width: 100%;
+    max-width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+  .footer-links::-webkit-scrollbar {
+    display: none;
+  }
+  .footer-links .footer-link {
+    flex-shrink: 0 !important;
+    white-space: nowrap !important;
+  }
+  .footer-copy {
+    font-size: 16px !important;
+    text-align: center !important;
+    width: 100% !important;
+  }
 
-  .case-nav-spacer { height: 40px !important; }
-  .case-footer-offset { margin-top: -40px !important; }
+  /* кейс auth: крупные вертикали на мобиле — 32px (перебивают inline height у gap-div) */
+  .case-nav-spacer { height: 32px !important; }
+  /* footer-section margin-top 24px !important → 24 + 8 = 32px до футера */
+  .case-footer-offset { margin-top: 8px !important; }
 
   .case-page-img { border-radius: 12px !important; }
   .case-spacer { height: 12px !important; }
+  .case-spacer--section {
+    height: 32px !important;
+  }
+
+  .case-hero-intro {
+    padding-top: 32px !important;
+    padding-bottom: 32px !important;
+  }
+
+  .case-task-secondary {
+    margin-bottom: 32px !important;
+  }
+
+  .case-insights-section--post-funnel {
+    margin-top: 32px !important;
+  }
+
+  .case-gap--hero-to-context {
+    height: 32px !important;
+    min-height: 32px !important;
+  }
+
+  .case-figma-body--context-after {
+    margin-bottom: 32px !important;
+  }
+
+  .case-gap--concept-to-research {
+    height: 32px !important;
+    min-height: 32px !important;
+  }
+
+  .case-gap--research1-to-signup {
+    height: 32px !important;
+    min-height: 32px !important;
+  }
+
+  .case-gap--signup-to-research2 {
+    height: 32px !important;
+    min-height: 32px !important;
+  }
+
+  .case-gap--research2-to-verify {
+    height: 32px !important;
+    min-height: 32px !important;
+  }
+
+  .case-gap--verify-to-cards {
+    height: 20px !important;
+    min-height: 20px !important;
+  }
+
+  .case-gap--cards-to-what-done {
+    height: 32px !important;
+    min-height: 32px !important;
+  }
+
+  .case-gap--what-done-to-password {
+    height: 32px !important;
+    min-height: 32px !important;
+  }
+
+  .case-gap--password-to-result {
+    height: 32px !important;
+    min-height: 32px !important;
+  }
   /* только секции контента — не трогать nav/footer с px-5 (иначе адаптив кейса «съезжает») */
   .case-page-main > section.px-5 {
     padding-left: 0 !important;
     padding-right: 0 !important;
+  }
+
+  /* герой: те же 20px по горизонтали, что и у Navbar (px-5), иначе блок ECOS уезжает относительно «кузенкова…» */
+  .case-page-main > section.case-hero-intro.px-5 {
+    padding-left: 1.25rem !important;
+    padding-right: 1.25rem !important;
+  }
+
+  .case-figma-label {
+    position: static !important;
+  }
+
+  .case-insights-section--tight-top {
+    margin-top: 8px !important;
   }
 
   .case-research-heading {
@@ -169,6 +941,10 @@ body {
     flex-direction: column !important;
     gap: 8px !important;
     margin-bottom: 16px !important;
+  }
+
+  .case-research-block--metrics-68 .case-stat-row {
+    margin-bottom: 32px !important;
   }
 
   .case-stat-card {

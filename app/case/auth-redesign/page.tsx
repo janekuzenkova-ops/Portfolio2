@@ -1,5 +1,6 @@
 import Image from "next/image";
 import type { Metadata } from "next";
+import type { ReactNode } from "react";
 import ScaleWrapper from "@/components/ScaleWrapper";
 import CaseEntryScroll from "@/components/CaseEntryScroll";
 import Navbar from "@/components/Navbar";
@@ -16,443 +17,468 @@ export const metadata: Metadata = {
   description: "редизайн флоу авторизации и регистрации в fintech-продукте ECOS",
 };
 
+/** строка 1 после «Регистрация —»: …В ECOS этот */
+const HERO_LEAD_AFTER_DASH = ` первый и самый критичный этап воронки fintech-продукта. В ECOS этот `;
+const HERO_LEAD_LINE2 = `этап был узким местом: пользователи не${nb}завершали KYC, не${nb}понимали `;
+const HERO_LEAD_LINE3 = `последовательность шагов и${nb}часто обращались в${nb}поддержку.`;
+
+const PROBLEM_CARDS = [
+  {
+    num: "01",
+    title: `68% не${nb}завершали регистрацию`,
+    desc: `Большинство уходили до${nb}конца воронки, не${nb}доходя до${nb}ключевых действий`,
+  },
+  {
+    num: "02",
+    title: "сложный и перегруженный KYC",
+    desc: "Верификация без объяснений и прогресса — пользователь не понимал зачем это нужно",
+  },
+  {
+    num: "03",
+    title: `нет${nb}ощущения прогресса`,
+    desc: `Пользователи не${nb}понимали, сколько шагов им${nb}предстоит и${nb}что${nb}ждёт дальше`,
+  },
+  {
+    num: "04",
+    title: `высокая нагрузка на${nb}поддержку`,
+    desc: `Непонятные требования и${nb}ошибки в${nb}процессе приводили к${nb}большому количеству обращений`,
+  },
+] as const;
+
+const TASK_SECONDARY = `подтолкнуть пользователей к${nb}дальнейшим действиям внутри продукта`;
+
+/** переносы как в Figma + nb против висячих предлогов/союзов */
+const RESEARCH1_LEAD_LINE1 = `Перед редизайном провели быстрые юзабилити-тесты, чтобы${nb}зафиксировать реальные`;
+const RESEARCH1_LEAD_LINE2 = `проблемы текущего${nb}флоу.`;
+
+const RESEARCH1_INSIGHTS: [string, ReactNode][] = [
+  ["01", `6 из 10 не${nb}поняли, что${nb}форма продолжается — не${nb}скроллили вниз`],
+  ["02", `Ошибки валидации появлялись неожиданно и${nb}не объясняли причину`],
+  [
+    "03",
+    <>
+      {`После отправки формы не${nb}было явного подтверждения — пользователи `}
+      <br />
+      {`нажимали${nb}кнопку повторно`}
+    </>,
+  ],
+  ["04", `Прогресс прохождения не${nb}был виден — непонятно сколько${nb}шагов осталось`],
+  ["05", `Долгий сценарий входа из-за${nb}отсутствия быстрых способов авторизации.`],
+];
+
+const FUNNEL_STEPS: { main: string; delta?: string; step: string }[] = [
+  { main: "100%", step: "Открыли приложение" },
+  { main: "78%", delta: "−22%", step: "Начали заполнять форму" },
+  { main: "47%", delta: "−31%", step: "Перешли к шагу верификации" },
+  { main: "38%", delta: "−9%", step: "Прошли верификацию" },
+  { main: "32%", step: "Завершили регистрацию" },
+];
+
+const RESEARCH2_LEAD_LINE1 = `Проанализировали данные аналитики, чтобы${nb}понять на${nb}каком шаге и${nb}сколько `;
+const RESEARCH2_LEAD_LINE2 = `пользователей уходило.`;
+
+const RESEARCH2_INSIGHTS: [string, ReactNode][] = [
+  [
+    "01",
+    <>
+      {`Шаг верификации— самый критичный: −31%, пользователи не${nb}понимали `}
+      <br />
+      {`зачем и${nb}что делать`}
+    </>,
+  ],
+  [
+    "02",
+    <>
+      {`22% пользователей уходили ещё до${nb}формы — на${nb}вводном экране не${nb}было понятного `}
+      <br />
+      следующего шага
+    </>,
+  ],
+  [
+    "03",
+    <>
+      {`Данные подтвердили проблемы, найденные на${nb}коридорках — решения приняты `}
+      <br />
+      {`на${nb}основе двух источников`}
+    </>,
+  ],
+];
+
+/** [Кейс/b, что сделала `2834:222373`](https://www.figma.com/design/vCzZlNer2Fixkg9ibPRxR0/?node-id=2834-222373) */
+const WHAT_DONE: [string, ReactNode][] = [
+  ["01", `Упростила структуру и${nb}сократила количество шагов, убрала лишние поля`],
+  [
+    "02",
+    <>
+      {`Перестроила сценарии по${nb}принципу «от простого к${nb}сложному», вынесла KYC `}
+      <br />
+      {`дальше по${nb}флоу`}
+    </>,
+  ],
+  ["03", `Внедрила прогрессивное раскрытие — только нужная информация на${nb}каждом этапе`],
+  ["04", "Добавила альтернативные способы входа: email, Apple, Google"],
+  ["05", `Добавила PIN-код для${nb}быстрого повторного входа`],
+  ["06", `Упростила интерфейс для${nb}пользователей без${nb}опыта в${nb}крипте`],
+];
+
+/** блок «результат» — текстовый слой (не растр), как в Figma */
+const RESULT_CARDS: { num: string; title: string; desc: ReactNode }[] = [
+  {
+    num: "01",
+    title: "Понятная структура регистрации",
+    desc: (
+      <>
+        {`Сокращение шагов и${nb}логичная последовательность увеличили количество завершённых регистраций на${nb}`}
+        <span className="case-figma-card-em">29%</span>.
+      </>
+    ),
+  },
+  {
+    num: "02",
+    title: "Прозрачный процесс KYC",
+    desc: `Объяснение этапов и${nb}прогресс регистрации снизили количество отказов на${nb}ключевых шагах.`,
+  },
+  {
+    num: "03",
+    title: `Меньше обращений в${nb}поддержку`,
+    desc: `Пользователи стали лучше понимать процесс регистрации, что${nb}снизило количество обращений в${nb}поддержку.`,
+  },
+  {
+    num: "04",
+    title: "Лучший первый пользовательский опыт",
+    desc: `Пользователь быстрее попадал внутрь продукта и${nb}начинал работу с${nb}сервисом.`,
+  },
+];
+
 function StaticImage({ src, alt, aspect }: { src: string; alt: string; aspect: string }) {
   return (
     <div className="w-full rounded-2xl overflow-hidden case-page-img" style={{ aspectRatio: aspect }}>
-      <Image
-        src={src}
-        alt={alt}
-        width={2880}
-        height={2880}
-        className="w-full h-full object-cover"
-      />
+      <Image src={src} alt={alt} width={2880} height={2880} className="w-full h-full object-cover" />
     </div>
   );
 }
 
-function DarkCard({ num, title, desc }: { num: string; title: string; desc: string }) {
+function CaseFigmaRow({
+  label,
+  labelStatic,
+  children,
+}: {
+  label: string;
+  /** только «контекст»: семантический заголовок, без sticky */
+  labelStatic?: boolean;
+  children: React.ReactNode;
+}) {
+  const staticLabel = labelStatic === true;
   return (
-    <div
-      className="case-dark-card"
-      style={{
-        background: "#1E1E1E",
-        borderRadius: "16px",
-        padding: "20px",
-        display: "flex",
-        flexDirection: "column",
-        gap: "8px",
-      }}
-    >
-      <span style={{ color: "#888", fontSize: "14px" }}>{num}</span>
-      <span className="case-typo" style={{ color: "#fff", fontSize: "16px", fontWeight: 600, lineHeight: 1.3 }}>
-        {title}
-      </span>
-      <span className="case-typo" style={{ color: "#aaa", fontSize: "14px", lineHeight: 1.5 }}>
-        {desc}
-      </span>
+    <div className="case-figma-row">
+      <div className={`case-figma-label-track${staticLabel ? " case-figma-label-track--static" : ""}`}>
+        {staticLabel ? (
+          <h2 className="case-figma-label case-figma-label--static">{label}</h2>
+        ) : (
+          <p className="case-figma-label">{label}</p>
+        )}
+      </div>
+      <div className="case-figma-content min-w-0">{children}</div>
     </div>
   );
 }
 
-function StatCard({ value, label }: { value: string; label: string }) {
+function FigmaMetricCard({ value, label }: { value: string; label: string }) {
   return (
-    <div className="case-stat-card">
-      <div className="case-stat-value">{value}</div>
-      <div className="case-stat-label">{label}</div>
+    <div className="case-figma-metric-card">
+      <p className="case-figma-metric-value">{value}</p>
+      <p className="case-figma-metric-label">{label}</p>
     </div>
   );
 }
 
-function SectionHeading({ children }: { children: React.ReactNode }) {
+function FigmaProblemCard({ num, title, desc }: { num: string; title: string; desc: ReactNode }) {
   return (
-    <h2 className="case-typo" style={{ color: "#111", fontSize: "22px", fontWeight: 600, marginBottom: "16px" }}>
-      {children}
-    </h2>
-  );
-}
-
-function BodyText({ children }: { children: React.ReactNode }) {
-  return (
-    <p className="case-typo" style={{ color: "#555", fontSize: "15px", lineHeight: 1.6 }}>
-      {children}
-    </p>
-  );
-}
-
-function FindingItem({ text }: { text: string }) {
-  return (
-    <div
-      className="case-typo"
-      style={{
-        padding: "14px 0",
-        borderBottom: "1px solid #e5e5e5",
-        color: "#333",
-        fontSize: "14px",
-        lineHeight: 1.6,
-      }}
-    >
-      {text}
+    <div className="case-figma-problem-card">
+      <p className="case-figma-card-num">{num}</p>
+      <p className="case-figma-card-title">{title}</p>
+      <p className="case-figma-card-desc">{desc}</p>
     </div>
   );
 }
 
-function ImageCaption({ children }: { children: React.ReactNode }) {
+function NumberedRow({ num, text }: { num: string; text: ReactNode }) {
   return (
-    <p
-      className="mobile-only-block case-typo"
-      style={{
-        color: "#555",
-        fontSize: "14px",
-        lineHeight: 1.6,
-        marginTop: "12px",
-      }}
-    >
-      {children}
-    </p>
+    <div className="case-figma-numbered-row">
+      <span className="case-figma-numbered-num">{num}</span>
+      <p className="case-figma-numbered-text">{text}</p>
+    </div>
+  );
+}
+
+function FunnelRow({ main, delta, step }: { main: string; delta?: string; step: string }) {
+  return (
+    <li className="case-funnel-item">
+      <div className="case-funnel-inner">
+        <p className="case-funnel-metric">
+          <span className="case-funnel-metric-main">{main}</span>
+          {delta != null && delta !== "" ? <span className="case-funnel-metric-delta">{nb}{delta}</span> : null}
+        </p>
+        <p className="case-funnel-step">{step}</p>
+      </div>
+    </li>
   );
 }
 
 export default function AuthRedesignCase() {
   return (
-    <ScaleWrapper>
+    <ScaleWrapper disableZoom>
       <CaseEntryScroll />
       <ReadingProgress />
       <main className="min-h-screen case-page-main">
         <Navbar />
 
-        {/* ===== HERO TITLE ===== */}
-        <section className="px-5">
-          <div className="desktop-only-block">
-            <StaticImage
-              src="/images/case-auth/hero-title.png"
-              alt="редизайн флоу авторизации и регистрации в fintech-продукте"
-              aspect="1400/402"
-            />
-          </div>
-          <div className="mobile-only-block" style={{
-            background: "#fff",
-            borderRadius: "12px",
-            padding: "20px 16px",
-          }}>
-            <div style={{ display: "flex", alignItems: "center", gap: "12px", marginBottom: "6px" }}>
-              <Image
-                src="/images/ecos-app-icon.png"
-                alt="ECOS"
-                width={44}
-                height={44}
-                priority
-                className="shrink-0"
-                style={{ borderRadius: "11px" }}
-              />
-              <span style={{ fontSize: "22px", fontWeight: 600, color: "#111", letterSpacing: "0.04em" }}>
-                ECOS
-              </span>
+        {/* hero — текст из Figma (2837:222901, 2837:223300); мокапы — отдельным кадром */}
+        <section className="px-5 case-hero-intro">
+          <div className="case-hero-text-grid">
+            <div className="case-hero-text-left">
+              <div className="case-hero-brand-row">
+                <Image
+                  src="/images/ecos-app-icon.png"
+                  alt="ECOS"
+                  width={36}
+                  height={36}
+                  priority
+                  className="shrink-0 rounded-[9px]"
+                />
+                <span className="case-hero-ecos">ECOS</span>
+              </div>
+              <div className="case-hero-tags">
+                <span>
+                  fintech<span className="case-hero-tag-sep">{nb}•{nb}</span>ios, android
+                </span>
+                <span>
+                  b2c<span className="case-hero-tag-sep">{nb}•{nb}</span>2025
+                </span>
+              </div>
             </div>
-            <div className="case-typo" style={{ color: "#888", fontSize: "13px", lineHeight: 1.45, marginBottom: "8px" }}>
-              fintech{nb}•{nb}iOS,{nb}Android{nb}•{nb}b2c{nb}•{nb}2025
+            <div className="case-hero-text-right">
+              <h1 className="case-hero-h1">
+                редизайн флоу авторизации
+                <br />
+                и{nb}регистрации в{nb}fintech-продукте
+              </h1>
+              <p className="case-hero-lead">
+                <span className="case-hero-lead-strong">Регистрация —</span>
+                {HERO_LEAD_AFTER_DASH}
+                <br />
+                {HERO_LEAD_LINE2}
+                <br />
+                {HERO_LEAD_LINE3}
+              </p>
             </div>
-            <h1 className="case-typo" style={{
-              color: "#111",
-              fontSize: "26px",
-              fontWeight: 600,
-              lineHeight: 1.15,
-              letterSpacing: "-0.02em",
-              margin: 0,
-              whiteSpace: "nowrap",
-              overflow: "hidden",
-              textOverflow: "ellipsis",
-            }}>
-              редизайн флоу авторизации и регистрации в fintech-продукте
-            </h1>
           </div>
         </section>
 
-        <div className="case-spacer" style={{ height: "20px" }} />
+        <section className="px-5">
+          <CaseGlowImage
+            src="/images/case-auth/hero.png"
+            alt="редизайн флоу авторизации и регистрации в fintech-продукте"
+            aspect="1400/810"
+          />
+        </section>
 
-          <section className="px-5">
-            <CaseGlowImage
-              src="/images/case-auth/hero.png"
-              alt="редизайн флоу авторизации и регистрации в fintech-продукте"
-              aspect="1400/810"
-            />
-          </section>
-        <div className="case-spacer" style={{ height: "20px" }} />
+        <div className="case-gap--hero-to-context" aria-hidden />
 
-          <section className="px-5">
-            <div className="desktop-only-block">
-              <StaticImage
-                src="/images/case-auth/info-section.png"
-                alt="Проблема: 68% не завершали регистрацию"
-                aspect="1400/2456"
-              />
+        <section className="px-5">
+          <CaseFigmaRow label="контекст" labelStatic>
+            <p className="case-figma-body case-figma-body--context-after">
+              Мобильное приложение ECOS обладало широким функционалом, однако регистрация
+              <br />
+              оставалась узким местом. До 68% пользователей не{nb}завершали её — до ключевых
+              <br />
+              действий они просто не{nb}доходили. Это напрямую влияло на{nb}конверсию и{nb}рост продукта.
+            </p>
+          </CaseFigmaRow>
+        </section>
+
+        <section className="px-5">
+          <CaseFigmaRow label="проблема">
+            <div className="case-figma-problem-grid">
+              {PROBLEM_CARDS.map((c) => (
+                <FigmaProblemCard key={c.num} num={c.num} title={c.title} desc={c.desc} />
+              ))}
             </div>
-            <div className="mobile-only-block" style={{
-              background: "#fff",
-              borderRadius: "12px",
-              padding: "24px 16px",
-            }}>
-              <SectionHeading>контекст</SectionHeading>
-              <BodyText>
-                Аналитика и{nb}пользовательские исследования показали, что{nb}регистрация является одним из{nb}главных
-                узких мест продукта.
-              </BodyText>
+          </CaseFigmaRow>
+        </section>
 
-              <div style={{ height: "24px" }} />
+        <div className="case-spacer case-spacer--section" />
 
-              <SectionHeading>проблема</SectionHeading>
-              <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
-                <DarkCard
-                  num="01"
-                  title={`68% не${nb}завершали регистрацию`}
-                  desc={`Большинство уходили до${nb}конца воронки, не${nb}доходя до${nb}ключевых действий`}
-                />
-                <DarkCard
-                  num="02"
-                  title="Сложный и перегруженный KYC"
-                  desc={`Верификация без${nb}объяснений и${nb}прогресса — пользователь не${nb}понимал, зачем это нужно`}
-                />
-                <DarkCard
-                  num="03"
-                  title="Нет ощущения прогресса"
-                  desc={`Пользователи не${nb}понимали, сколько шагов им предстоит и${nb}что ждёт дальше`}
-                />
-                <DarkCard
-                  num="04"
-                  title="Высокая нагрузка на поддержку"
-                  desc={`Непонятные требования и${nb}ошибки в${nb}процессе приводили к${nb}большому количеству обращений`}
-                />
-              </div>
-
-              <div style={{ height: "24px" }} />
-
-              <SectionHeading>задача</SectionHeading>
-              <BodyText>
-                Переработала флоу авторизации: добавила понятные состояния полей и{nb}валидацию. Это напрямую влияло
-                на{nb}рост продукта и{nb}конверсию в{nb}дальнейшие действия.
-              </BodyText>
+        <section className="px-5">
+          <CaseFigmaRow label="задача">
+            <div className="case-task-stack">
+              <p className="case-task-primary">
+                упростить вход в{nb}продукт, снизить количество отказов и{nb}увеличить
+                <br />
+                количество завершённых регистраций{nb}
+              </p>
+              <p className="case-task-secondary">{TASK_SECONDARY}</p>
             </div>
-          </section>
-        <div className="case-spacer" style={{ height: "20px" }} />
+          </CaseFigmaRow>
+        </section>
 
-          <section className="px-5">
-            <div className="desktop-only-block">
-              <StaticImage
-                src="/images/case-auth/research1.png"
-                alt="Коридорное тестирование"
-                aspect="1400/1150"
-              />
-            </div>
-            <div className="mobile-only-block" style={{
-              background: "#fff",
-              borderRadius: "12px",
-              padding: "24px 16px",
-            }}>
-              <h2 className="case-research-heading">исследование — 01</h2>
+        <section className="px-5">
+          <CaseGlowImage
+            src="/images/case-auth/img-info.png"
+            alt="логин: пустое состояние, заполненные поля и ошибка валидации с клавиатурой"
+            aspect="1400/810"
+          />
+        </section>
 
-              <div className="case-stat-row">
-                <StatCard value="10" label={`участников`} />
-                <StatCard value="15–20 мин" label={`длительность${nb}сессии`} />
-                <StatCard value="3 задачи" label={`на${nb}регистрацию и${nb}вход`} />
-              </div>
-
-              <div className="case-typo" style={{ color: "#111", fontSize: "15px", fontWeight: 600, marginBottom: "8px" }}>
-                Коридорное тестирование
-              </div>
-              <BodyText>
-                Перед редизайном провели быстрые юзабилити-тесты, чтобы{nb}зафиксировать реальные проблемы текущего флоу.
-              </BodyText>
-
-              <div style={{ marginTop: "16px", borderTop: "1px solid #e5e5e5" }}>
-                <FindingItem
-                  text={`До${nb}68% пользователей отваливались на${nb}этапе KYC/регистрации`}
-                />
-                <FindingItem
-                  text={`Пользователи не${nb}понимали требования и${nb}последовательность шагов`}
-                />
-                <FindingItem
-                  text={`Процесс выглядел сложным и${nb}перегруженным, особенно для${nb}новичков в${nb}крипто-финтехе`}
-                />
-                <FindingItem
-                  text={`Высокая нагрузка на${nb}поддержку (вопросы «что происходит?», «почему не${nb}работает?»)`}
-                />
-              </div>
-            </div>
-          </section>
-        <div className="case-spacer" style={{ height: "20px" }} />
-
-          <section className="px-5">
-            <CaseGlowImage
-              src="/images/case-auth/img2-signup.png"
-              alt="Первый шаг — создание аккаунта"
-              aspect="1400/810"
-            />
-            <ImageCaption>
-              Первый шаг{nb}— создание аккаунта. Пользователь вводит email и{nb}пароль. Я{nb}спроектировала понятные
-              состояния полей и{nb}валидацию, чтобы{nb}снизить количество ошибок и{nb}упростить процесс регистрации.
-            </ImageCaption>
-          </section>
-        <div className="case-spacer" style={{ height: "20px" }} />
-
-          <section className="px-5">
-            <div className="desktop-only-block">
-              <StaticImage
-                src="/images/case-auth/research2.png"
-                alt="Анализ отвалов по воронке"
-                aspect="1400/1454"
-              />
-            </div>
-            <div className="mobile-only-block" style={{
-              background: "#fff",
-              borderRadius: "12px",
-              padding: "24px 16px",
-            }}>
-              <h2 className="case-research-heading">исследование — 02</h2>
-
-              <div className="case-stat-row">
-                <StatCard value="68%" label={`не${nb}завершали регистрацию`} />
-                <StatCard value="KYC" label={`наибольший${nb}отвал`} />
-                <StatCard value="−29%" label={`меньше${nb}потерь`} />
-              </div>
-
-              <div className="case-typo" style={{ color: "#111", fontSize: "15px", fontWeight: 600, marginBottom: "8px" }}>
-                Анализ отвалов по{nb}воронке
-              </div>
-              <BodyText>
-                Проанализировали данные аналитики, чтобы{nb}понять, на{nb}каком шаге и{nb}сколько пользователей уходило.
-              </BodyText>
-
-              <div style={{ marginTop: "16px", borderTop: "1px solid #e5e5e5" }}>
-                <FindingItem
-                  text={`До${nb}68% пользователей отваливались на${nb}этапе KYC/регистрации`}
-                />
-                <FindingItem
-                  text={`Пользователи не${nb}понимали требования и${nb}последовательность шагов`}
-                />
-                <FindingItem
-                  text={`Процесс выглядел сложным и${nb}перегруженным, особенно для${nb}новичков в${nb}крипто-финтехе`}
-                />
-                <FindingItem
-                  text={`Высокая нагрузка на${nb}поддержку (вопросы «что происходит?», «почему не${nb}работает?»)`}
-                />
-                <FindingItem
-                  text={`Это напрямую влияло на${nb}рост продукта и${nb}конверсию в${nb}дальнейшие действия`}
-                />
-              </div>
-            </div>
-          </section>
-        <div className="case-spacer" style={{ height: "20px" }} />
-
-          <section className="px-5">
-            <CaseGlowImage
-              src="/images/case-auth/img3-verify.png"
-              alt="Второй шаг — подтверждение email"
-              aspect="1400/810"
-            />
-            <ImageCaption>
-              Второй шаг{nb}— подтверждение email. Экран сфокусирован на{nb}одном действии{nb}— вводе кода. Добавлены
-              автопереход между полями, понятные ошибки и{nb}таймер повторной отправки.
-            </ImageCaption>
-          </section>
-        <div className="case-spacer" style={{ height: "20px" }} />
-
-          <section className="px-5">
+        <section className="px-5 case-concept-pair-section">
+          <div className="case-concept-pair-grid">
             <StaticImage
-              src="/images/case-auth/img4-cards.png"
-              alt="Финальный шаг — создание PIN-кода"
-              aspect="1400/520"
+              src="/images/case-auth/img-concept-welcome.png"
+              alt="Welcome to ECOS: онбординг перед регистрацией"
+              aspect="692/520"
             />
-            <ImageCaption>Финальный шаг регистрации{nb}— создание PIN-кода.</ImageCaption>
-          </section>
-        <div className="case-spacer" style={{ height: "20px" }} />
+            <StaticImage
+              src="/images/case-auth/img-concept-signup.png"
+              alt="Sign up: шаг 1 из 3, поля формы и клавиатура"
+              aspect="692/520"
+            />
+          </div>
+        </section>
 
-          <section className="px-5">
-            <div className="desktop-only-block">
-              <StaticImage
-                src="/images/case-auth/what-done.png"
-                alt="Что сделала"
-                aspect="1400/776"
-              />
-            </div>
-            <div className="mobile-only-block" style={{
-              background: "#fff",
-              borderRadius: "12px",
-              padding: "24px 16px",
-            }}>
-              <SectionHeading>что сделала</SectionHeading>
-              <div style={{ borderTop: "1px solid #e5e5e5" }}>
-                <FindingItem
-                  text={`Провела аудит текущего флоу регистрации и${nb}авторизации${nb}— зафиксировала узкие места`}
-                />
-                <FindingItem
-                  text={`Спроектировала новую структуру шагов: сократила количество экранов и${nb}упростила навигацию`}
-                />
-                <FindingItem
-                  text={`Добавила прогресс-бар и${nb}понятные состояния полей с${nb}валидацией в${nb}реальном времени`}
-                />
-                <FindingItem
-                  text={`Переработала экраны KYC-верификации${nb}— объяснение каждого шага и${nb}зачем он нужен`}
-                />
-                <FindingItem
-                  text={`Спроектировала флоу восстановления пароля с${nb}минимальным количеством действий`}
-                />
-                <FindingItem
-                  text={`Подготовила UI-кит и${nb}передала в${nb}разработку с${nb}детальной спецификацией`}
-                />
+        <div className="case-gap--concept-to-research" aria-hidden />
+
+        <section className="px-5">
+          <CaseFigmaRow label="исследование - 01">
+            <div className="case-research-block case-research-block--metrics-68">
+              <h2 className="case-research-title">коридорное тестирование</h2>
+              <p className="case-figma-body case-research-lead">
+                {RESEARCH1_LEAD_LINE1}
+                <br />
+                {RESEARCH1_LEAD_LINE2}
+              </p>
+              <div className="case-stat-row">
+                <FigmaMetricCard value="10" label="участников" />
+                <FigmaMetricCard value="15–20 мин" label="длительность сессии" />
+                <FigmaMetricCard value="3 задачи" label={`на${nb}регистрацию и${nb}вход`} />
+              </div>
+              <div className="case-insights-section">
+                <h3 className="case-insights-heading">ключевые инсайты</h3>
+                <div className="case-figma-list-rows">
+                  {RESEARCH1_INSIGHTS.map(([n, t]) => (
+                    <div key={n} className="case-figma-numbered-wrap">
+                      <NumberedRow num={n} text={t} />
+                    </div>
+                  ))}
+                </div>
               </div>
             </div>
-          </section>
-        <div className="case-spacer" style={{ height: "20px" }} />
+          </CaseFigmaRow>
+          <div
+            className="case-gap--research1-to-signup"
+            style={{ display: "block", width: "100%", height: 100, minHeight: 100, flexShrink: 0 }}
+            aria-hidden
+          />
+        </section>
 
-          <section className="px-5">
-            <CaseGlowImage
-              src="/images/case-auth/img5-password.png"
-              alt="Флоу восстановления пароля"
-              aspect="1400/810"
-            />
-          </section>
-        <div className="case-spacer" style={{ height: "20px" }} />
+        <section className="px-5">
+          <CaseGlowImage src="/images/case-auth/img2-signup.png" alt="Первый шаг — создание аккаунта" aspect="1400/810" />
+        </section>
 
-          <section className="px-5">
-            <div className="desktop-only-block">
-              <StaticImage
-                src="/images/case-auth/result.png"
-                alt="Результат"
-                aspect="1400/580"
-              />
-            </div>
-            <div className="mobile-only-block" style={{
-              background: "#1A1A1A",
-              borderRadius: "12px",
-              padding: "24px 16px",
-            }}>
-              <h2 className="case-typo" style={{ color: "#fff", fontSize: "22px", fontWeight: 600, marginBottom: "16px" }}>
-                результат
-              </h2>
-              <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
-                <DarkCard
-                  num="01"
-                  title="Понятная структура регистрации"
-                  desc={`Сокращение шагов и${nb}логичная последовательность увеличили количество завершённых регистраций на${nb}29%.`}
-                />
-                <DarkCard
-                  num="02"
-                  title="Прозрачный процесс KYC"
-                  desc={`Объяснение этапов и${nb}прогресс регистрации снизили количество отказов на${nb}ключевых шагах.`}
-                />
-                <DarkCard
-                  num="03"
-                  title="Меньше обращений в поддержку"
-                  desc={`Пользователи стали лучше понимать процесс регистрации, что${nb}снизило количество обращений в${nb}поддержку.`}
-                />
-                <DarkCard
-                  num="04"
-                  title="Лучший первый пользовательский опыт"
-                  desc={`Пользователь быстрее попадал внутрь продукта и${nb}начинал работу с${nb}сервисом.`}
-                />
+        <div
+          className="case-gap--signup-to-research2"
+          style={{ display: "block", width: "100%", height: 100, minHeight: 100, flexShrink: 0 }}
+          aria-hidden
+        />
+
+        <section className="px-5">
+          <CaseFigmaRow label="исследование - 02">
+            <div className="case-research-block case-research-block--metrics-68">
+              <h2 className="case-research-title">анализ отвалов по воронке</h2>
+              <p className="case-figma-body case-research-lead">
+                {RESEARCH2_LEAD_LINE1}
+                <br />
+                {RESEARCH2_LEAD_LINE2}
+              </p>
+              <div className="case-stat-row">
+                <FigmaMetricCard value="68%" label={`не${nb}завершали регистрацию`} />
+                <FigmaMetricCard value="верификация личности" label="наибольший отвал" />
+                <FigmaMetricCard value="−29%" label="потерь после редизайна" />
+              </div>
+              <div className="case-insights-section">
+                <h3 className="case-insights-heading">отвалы по шагам</h3>
+                <ul className="case-funnel-list">
+                  {FUNNEL_STEPS.map((row) => (
+                    <FunnelRow key={row.step} main={row.main} delta={row.delta} step={row.step} />
+                  ))}
+                </ul>
+              </div>
+              <div className="case-insights-section case-insights-section--post-funnel">
+                <h3 className="case-insights-heading">ключевые инсайты</h3>
+                <div className="case-figma-list-rows">
+                  {RESEARCH2_INSIGHTS.map(([n, t]) => (
+                    <div key={n} className="case-figma-numbered-wrap">
+                      <NumberedRow num={n} text={t} />
+                    </div>
+                  ))}
+                </div>
               </div>
             </div>
-          </section>
-        <div className="case-nav-spacer" style={{ height: "80px" }} />
+          </CaseFigmaRow>
+        </section>
+
+        <div className="case-gap--research2-to-verify" aria-hidden />
+
+        <section className="px-5">
+          <CaseGlowImage src="/images/case-auth/img3-verify.png" alt="ECOS, экран приложения" aspect="1400/810" />
+        </section>
+
+        <div className="case-gap--verify-to-cards" aria-hidden />
+
+        <section className="px-5">
+          <StaticImage src="/images/case-auth/img4-cards.png" alt="ECOS, экран приложения" aspect="1400/520" />
+        </section>
+
+        <div
+          className="case-gap--cards-to-what-done"
+          style={{ display: "block", width: "100%", height: 100, minHeight: 100, flexShrink: 0 }}
+          aria-hidden
+        />
+
+        <section className="px-5">
+          <CaseFigmaRow label="что сделала">
+            <div className="case-figma-list-rows">
+              {WHAT_DONE.map(([n, t]) => (
+                <div key={n} className="case-figma-numbered-wrap">
+                  <NumberedRow num={n} text={t} />
+                </div>
+              ))}
+            </div>
+          </CaseFigmaRow>
+        </section>
+
+        <div
+          className="case-gap--what-done-to-password"
+          style={{ display: "block", width: "100%", height: 100, minHeight: 100, flexShrink: 0 }}
+          aria-hidden
+        />
+
+        <section className="px-5">
+          <CaseGlowImage src="/images/case-auth/img5-password.png" alt="ECOS, экран приложения" aspect="1400/810" />
+        </section>
+
+        <div className="case-gap--password-to-result" aria-hidden />
+
+        <section className="px-5">
+          <CaseFigmaRow label="результат">
+            <div className="case-result-grid">
+              {RESULT_CARDS.map((c) => (
+                <FigmaProblemCard key={c.num} num={c.num} title={c.title} desc={c.desc} />
+              ))}
+            </div>
+          </CaseFigmaRow>
+        </section>
+
+        <div className="case-nav-spacer" aria-hidden />
 
         <section className="px-5">
           <div className="desktop-only w-full items-center justify-between" style={{ width: "100%" }}>
@@ -498,14 +524,7 @@ export default function AuthRedesignCase() {
           <div className="case-nav-mobile-wrap">
             <a href="/" className="case-nav-m-link">
               <div className="case-nav-m-thumb">
-                <Image
-                  src="/images/case2-header.png"
-                  alt=""
-                  width={176}
-                  height={132}
-                  className="object-cover"
-                  sizes="88px"
-                />
+                <Image src="/images/case2-header.png" alt="" width={176} height={132} className="object-cover" sizes="88px" />
               </div>
               <div className="case-nav-m-text">
                 <span className="case-nav-m-label case-typo">← предыдущий кейс</span>
@@ -513,14 +532,7 @@ export default function AuthRedesignCase() {
             </a>
             <a href="/" className="case-nav-m-link case-nav-m-link--next">
               <div className="case-nav-m-thumb">
-                <Image
-                  src="/images/case1-header.png"
-                  alt=""
-                  width={176}
-                  height={132}
-                  className="object-cover"
-                  sizes="88px"
-                />
+                <Image src="/images/case1-header.png" alt="" width={176} height={132} className="object-cover" sizes="88px" />
               </div>
               <div className="case-nav-m-text">
                 <span className="case-nav-m-label case-typo">следующий кейс →</span>
@@ -529,7 +541,7 @@ export default function AuthRedesignCase() {
           </div>
         </section>
 
-        <div className="case-footer-offset" style={{ marginTop: "-100px" }}>
+        <div className="case-footer-offset">
           <Footer />
         </div>
       </main>

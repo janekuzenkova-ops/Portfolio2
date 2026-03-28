@@ -9,7 +9,8 @@
     "dev:3001": "next dev --turbopack -p 3001",
     "build": "next build",
     "start": "next start",
-    "lint": "tsc --noEmit"
+    "lint": "tsc --noEmit",
+    "figma:case-images": "node scripts/figma-export-case-images.mjs"
   },
   "dependencies": {
     "lenis": "^1.3.21",
